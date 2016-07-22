@@ -12,8 +12,19 @@ body {
     height: 100%;
 }
 
-a{
+.header a{
 	font-size:22px;
+}
+
+.page a{
+	color:black;
+}
+
+.page .selected a{
+	color:#f16739;
+}
+.page a:hover{
+	color:#f16739;
 }
 
 button{
@@ -297,6 +308,89 @@ margin-bottom:0px;
 #stone_info_view h3:hover{
 	color:#f56543;
 }
+
+/* Menu Styles */
+
+.third-level-menu
+{
+    position: absolute;
+    top: 0;
+    right: -150px;
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+    color:white;
+}
+
+.third-level-menu > li
+{
+    height: 30px;
+    background: rgba(245, 245, 245, 0.4);
+    border: solid 1px white;
+}
+.third-level-menu > li:hover { border-color:#f56543; color:#f56543;}
+
+.second-level-menu
+{
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+.second-level-menu > li
+{
+    position: relative;
+    height: 30px;
+    background: rgba(245, 245, 245, 0.4);
+    border: white 1px solid;
+    color:white;
+}
+.second-level-menu > li:hover { border-color:#f56543; color:#f56543;}
+
+.top-level-menu
+{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.top-level-menu > li
+{
+    position: relative;
+    float: left;
+    height: 30px;
+    width: 150px;
+    background: rgba(245, 245, 245, 0.4);
+}
+.top-level-menu > li:hover { border-color:#f56543;color:#f56543;}
+
+.top-level-menu li:hover > ul
+{
+    /* On hover, display the next level's menu */
+    display: inline;
+}
+
+
+/* Menu Link Styles */
+
+.top-level-menu a /* Apply to all links inside the multi-level menu */
+{
+    color: white;
+    text-decoration: none;
+    padding: 0 0 0 10px;
+    
+    /* Make the link cover the entire list item-container */
+    display: block;
+    line-height: 30px;
+}
+.top-level-menu a:hover { border-color:#f56543; color:#f56543;}
 
 @media all and  ( max-width: 920px )  {
 	.navbar{

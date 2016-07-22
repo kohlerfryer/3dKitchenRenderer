@@ -9,7 +9,10 @@ Route::get('login', function()
 {
 	if(Auth::guest())
 	return View::make('auth/login');
-	else return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user()]);
+	else return View::make('add_stone', 
+		['current_page' => 'add_stone' , 'user_name' => Auth::user() , 
+		'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]
+	);
 });
 Route::get('register', function()
 {
@@ -30,5 +33,6 @@ Route::post('admin_panel/update_stone', 'AdminController@update_stone');
 Route::get('admin_panel/get_stone', 'AdminController@get_stone');
 Route::get('admin_panel/delete_stone', 'AdminController@delete_stone');
 
-Route::get('kitchen_dreamer', function(){return View::make('kitchen_dreamer');});
+Route::get('kitchen_dreamer', 'MainController@get_kitchen_dreamer_view');
+Route::get('kitchen_dreamer/get_instant_quote', 'MainController@get_instant_quote');
 

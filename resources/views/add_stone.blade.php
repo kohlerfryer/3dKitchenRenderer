@@ -13,9 +13,10 @@
        <input name="stone_name" id="stone_name"></br></br>
        Stone Type </br>
        <select name="stone_type" id="stone_type" style="width:150px">
-        <option value="granite">granite</option>
-        <option value="marble">marble</option>
-        <option value="onyx">onyx</option>
+          <option value="">select type</option>
+          @foreach($stone_types as $stone_type)
+             <option value="{{trim($stone_type->type)}}" >{{$stone_type->type}}</option>
+          @endforeach
        </select></br></br>
        Price Per Square Foot</br>
        <input name="stone_price" id="stone_price"></br></br>
@@ -26,7 +27,7 @@
        Stone Image
        <input type="file" name="stone_image" id="stone_image" enctype='multipart/form-data'></br>
        Stone Texture
-       <input type="file" name="stone_image_texture" id="stone_image_texture" ></br>
+       <input type="file" name="stone_texture" id="stone_texture" enctype='multipart/form-data'></br>
        <input type="hidden" name="_token" value="{{ csrf_token() }}">
        <button type="submit">Submit</button>
      </form>

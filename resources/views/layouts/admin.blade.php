@@ -92,9 +92,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Optionally, you can add icons to the links -->
         @if($current_page == 'add_stone')
         <li class="active" ><a href="#"><i class="fa fa-link"></i> <span>Add Stone</span></a></li>
-        <li><a href="inventory_management" ><i class="fa fa-link"></i> <span>Inventory Management</span></a></li>
+        <li><a href="/admin/inventory_management" ><i class="fa fa-link"></i> <span>Inventory Management</span></a></li>
         @else
-        <li  ><a href="add_stone"><i class="fa fa-link"></i> <span>Add Stone</span></a></li>
+        <li  ><a href="/admin/add_stone"><i class="fa fa-link"></i> <span>Add Stone</span></a></li>
         <li class="active"><a href="#"  ><i class="fa fa-link"></i> <span>Inventory Management</span></a></li>
         @endif
 
@@ -109,7 +109,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Content Header (Page header) -->
 
     @yield('content')
-
+  </div>
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->

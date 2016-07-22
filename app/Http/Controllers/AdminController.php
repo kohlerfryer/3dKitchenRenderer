@@ -21,22 +21,37 @@ public function __construct()
 
 public function page_request($page_request)
 {
-  return View::make($page_request, ['current_page' => $page_request , 'user_name' => Auth::user()]);
+  $page_data = [];
+  $page_data['current_page'] = $page_request;
+  $page_data['user_name'] = Auth::user();
+  $page_data['stone_types'] = DB::select('select * from stone_types');
+
+  if($page_request == 'inventory_management')
+  {
+    if(Input::has('stone_type'))
+    {
+      $page_data['selected_stone_type'] = Input::get('stone_type');
+      $page_data['stones'] = DB::select('select * from stone where stone_type = ?',[Input::get('stone_type')]);
+    }
+    if(Input::has('stone_id')) $page_data['selected_stone'] = DB::table('stone')->where('id', '=', Input::get('stone_id'))->first();
+  }
+
+  return View::make($page_request, $page_data);
 }
 
-public function add_image_to_directory($stone_type)
+public function add_image_to_directory($stone_type, $image)
   {
+    $destination_paths = [];
 
-    if(!Input::file('stone_image')->isvalid()) return -1; 
+    if(!$image->isvalid()) return -1; 
+    $image_destination_path = 'images/'. $stone_type . '/';
+    $image_extension =  strtolower($image->getClientOriginalExtension());
+    if($image_extension != 'png' && $image_extension != 'gif' && $image_extension != 'jpeg' && $image_extension != 'gif' && $image_extension != 'tif' && $image_extension != 'jpg') return -1;  
+    $image_file_name = rand(11111,99999) . '.' . $image_extension;
+    $image->move($image_destination_path, $image_file_name);
 
-    $stone_image = array('image' => Input::file('stone_image'));
-    $destination_path = 'images/'. $stone_type . '/';
-    $extension =  strtolower(Input::file('stone_image')->getClientOriginalExtension());
+    return $image_destination_path . $image_file_name;
 
-    if($extension != 'png' && $extension != 'gif' && $extension != 'jpeg' && $extension != 'gif' && $extension != 'tif' && $extension != 'jpg') return -1;  
-    $file_name = rand(11111,99999) . '.' . $extension;
-    Input::file('stone_image')->move($destination_path, $file_name);
-    return $destination_path . $file_name;
   }
 
   public function add_stone()
@@ -56,10 +71,13 @@ public function add_image_to_directory($stone_type)
     $stone_description = Input::get('stone_description');
     $stone_price = Input::get('stone_price');
     $stone_quantity = Input::get('stone_quantity');
+    $destination_paths = 
+
+    $stone_image_url = $this->add_image_to_directory($stone_type, Input::file('stone_image'));
+    $stone_texture_url = $this->add_image_to_directory($stone_type, Input::file('stone_texture'));
 
 
-    $stone_image_url = $this->add_image_to_directory($stone_type);
-    if($stone_image_url == -1)
+    if($stone_image_url == -1 || $stone_texture_url == -1)
     {
       $results['error_message'] = 'invalid image format';
       return json_encode($results);
@@ -73,7 +91,8 @@ public function add_image_to_directory($stone_type)
       'in_stock_quantity' => $stone_quantity ,
       'stone_description' => $stone_description, 
       'stone_picture_url' => $stone_image_url ,
-      'stone_price_per_square_foot' =>$stone_price 
+      'stone_price_per_square_foot' =>$stone_price,
+      'stone_texture_url' => $stone_texture_url
       )
     );
 
@@ -106,7 +125,7 @@ public function add_image_to_directory($stone_type)
 
       if(!Input::has('stone_image_url'))
       {
-        $stone_image_url = $this->add_image_to_directory($stone_type);
+        $stone_image_url = $this->add_image_to_directory($stone_type, Input::file('stone_image'));
         if($stone_image_url == -1)
         {
           $results['error_message'] = 'invalid image format';
@@ -117,6 +136,19 @@ public function add_image_to_directory($stone_type)
       }
       else $stone_image_url = Input::get('stone_image_url');
 
+      if(!Input::has('stone_texture_url'))
+      {
+        $stone_texture_url = $this->add_image_to_directory($stone_type, Input::file('stone_texture'));
+        if($stone_texture_url == -1)
+        {
+          $results['error_message'] = 'invalid image format';
+          return json_encode($results);
+        }
+          $old_stone = DB::table('stone')->where('id', '=', $stone_id)->first();
+          File::Delete($old_stone->stone_texture_url);
+      }
+      else $stone_texture_url = Input::get('stone_texture_url');
+
       DB::table('stone')->where('id', '=' , $stone_id)->update(
         array(
         'stone_name' => $stone_name, 
@@ -124,13 +156,12 @@ public function add_image_to_directory($stone_type)
         'in_stock_quantity' => $stone_quantity ,
         'stone_description' => $stone_description, 
         'stone_picture_url' => $stone_image_url ,
-        'stone_price_per_square_foot' => $stone_price 
+        'stone_price_per_square_foot' => $stone_price ,
+        'stone_texture_url' => $stone_texture_url
         )
       );
 
       $results['result'] = 'success';
-      $results['stone_id'] = $stone_id;
-      $results['stone_image_url'] = $stone_image_url;
       return json_encode($results);
   }
 
