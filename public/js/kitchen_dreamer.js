@@ -13,11 +13,12 @@ $(document).ready(function(){
 		
 		$('#pick_stone_view').hide();	
 		$('#stone_info_view').show();
+
+		$('main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers?stone_id=' + $(this).attr('id'));
+
+
 	});
 
-	$('#settings_gear').click(function(){
-		$('#settings_drop_down').show();
-	});
 
 	$('#btn_submit_quote_info').click(function(){
 		var square_feet = $('#square_feet').val();

@@ -9,6 +9,10 @@ use DB;
 use File;
 use View;
 use Auth;
+use Imagick;
+use ImagickPixel;
+use Illuminate\Http\Response;
+use Storage;
 
 class AdminController extends Controller
 {
@@ -71,11 +75,9 @@ public function add_image_to_directory($stone_type, $image)
     $stone_description = Input::get('stone_description');
     $stone_price = Input::get('stone_price');
     $stone_quantity = Input::get('stone_quantity');
-    $destination_paths = 
 
     $stone_image_url = $this->add_image_to_directory($stone_type, Input::file('stone_image'));
     $stone_texture_url = $this->add_image_to_directory($stone_type, Input::file('stone_texture'));
-
 
     if($stone_image_url == -1 || $stone_texture_url == -1)
     {
@@ -84,7 +86,7 @@ public function add_image_to_directory($stone_type, $image)
     }
 
 
-    DB::table('stone')->insert(
+    $stone_id = DB::table('stone')->insertGetId(
       array(
       'stone_name' => $stone_name, 
       'stone_type' => $stone_type , 
@@ -95,6 +97,9 @@ public function add_image_to_directory($stone_type, $image)
       'stone_texture_url' => $stone_texture_url
       )
     );
+
+    $this->set_textures_kitchen_1($stone_id);
+
 
     $results['result'] = 'success';
     return json_encode($results);
@@ -225,4 +230,108 @@ public function add_image_to_directory($stone_type, $image)
     $stone_id = Input::get('stone_id');
     DB::table('stone')->where('id', '=', Input::get('stone_id'))->delete();
   }
+
+    public function set_textures_kitchen_1($stone_id)
+    {
+
+      $stone = DB::table('stone')->where('id', '=', $stone_id)->first();
+
+      $im = new Imagick($stone->stone_texture_url);
+      $im2 = clone $im;
+      $im3 = clone $im;
+      $image_background = new Imagick();
+      $image_background->newImage(900, 500, 'transparent');
+      $image_background->setimagebackgroundcolor("transparent");
+
+
+      $im->adaptiveResizeImage(900,500);
+      $im2->cropImage(900,20,0,0);
+      $im2->adaptiveResizeImage(900,500);
+      $im3->cropImage(20,500,0,0);
+      $im3->adaptiveResizeImage(900,500);
+
+
+      $im->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im2->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im3->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+
+      /*$controlPoints = array( 
+        0, 0, 
+        213, 266,
+
+        0, 500,
+        142, 290,       //white kitchen
+
+        900, 0,
+        753, 266,
+
+        900, 500,
+        846, 289
+      );*/
+
+      $controlPoints = array( 
+        0, 0, 
+        621, 324,
+
+        0, 500,
+        342, 380,       
+
+        900, 0,
+        800, 337,
+
+        900, 500,
+        613, 423
+      );
+
+      $controlPoints2 = array( 
+        0, 0, 
+        343, 380,
+
+        0, 500,
+        342, 390,       
+
+        900, 0,
+        613, 423,
+
+        900, 500,
+        613, 433
+      );
+
+      $controlPoints3 = array( 
+        0, 0, 
+        800, 337,
+
+        0, 500,
+        613, 423,     
+
+        900, 0,
+        800, 347,
+
+        900, 500,
+        613, 433
+      );
+
+      $im->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints, true);
+      $im2->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints2, true);
+      $im3->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints3, true);
+
+      $image_background->addImage($im);
+      $image_background->addImage($im2);
+      $image_background->addImage($im3);
+      $image_background = $image_background->mergeImageLayers(Imagick::LAYERMETHOD_UNDEFINED);
+      $image_background->setFormat("png");
+
+      $image_file_name = rand(11111,99999) . '.png';
+      File::put(public_path().'/images/texture_layouts/'.$image_file_name, $image_background);
+
+      DB::table('texture')->insert(
+        array(
+        'stone_id' => $stone_id , 
+        'kitchen_id' => '1',
+        'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
+        )
+      );
+
+    }
+
 }

@@ -33,6 +33,8 @@ Route::post('admin_panel/update_stone', 'AdminController@update_stone');
 Route::get('admin_panel/get_stone', 'AdminController@get_stone');
 Route::get('admin_panel/delete_stone', 'AdminController@delete_stone');
 
+
 Route::get('kitchen_dreamer', 'MainController@get_kitchen_dreamer_view');
 Route::get('kitchen_dreamer/get_instant_quote', 'MainController@get_instant_quote');
+Route::get('kitchen_dreamer/get_kitchen_counter_layers/{stone_id}', 'MainController@get_kitchen_counter_layers');
 

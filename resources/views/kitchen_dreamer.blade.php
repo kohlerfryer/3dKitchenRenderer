@@ -3,24 +3,28 @@
 @section('content')
 	<center>
 		<div class="kitchen_dreamer" style="position:relative">
-			<img src="images/kitchen_backgrounds/kitchen_1.jpg" height="400px" width="100%" style="position:absolute;top:0;left:0"/>
-			<img src="images/gear-setting.png" height="25px" width="25px" id="settings_gear" style="position:absolute;left:0;absolute;top:0;margin:5px"/>
-			<ul class="top-level-menu" id="settings_drop_down" style="position:absolute;" hidden>
+			<img src="images/kitchen_backgrounds/kitchen_2.jpg" height="500px" width="100%" style="position:absolute;top:0;left:0"/>
+			<img id="main_counter_top" src="/kitchen_dreamer/get_kitchen_counter_layers?stone_id=73" style="position:absolute;left:0px;top:0px;width:100%;height:100%">
+			<img src="images/gear-setting.png" height="25px" width="25px" id="settings_gear" style="position:absolute;left:0;absolute;top:0;margin:4px"/>
+			<ul class="top-level-menu" id="settings_drop_down" style="position:absolute;" >
 			    <li>
-			        <a href="#" style="color:white;border:solid 1px;border-color:white">Settings</a>
+			        <a href="#" style="border:solid 1px;color:white;border-color:white;background:transparent">Settings</a>
 			        <ul class="second-level-menu">
-			            <li><a href="#">Chicago</a></li>
-			            <li><a href="#">Los Angeles</a></li>
 			            <li>
-			                <a href="#">Floor</a>
-			                <ul class="third-level-menu">
-			                    <li><a href="#">Information</a></li>
-			                    <li><a href="#">Book a Meeting</a></li>
-			                    <li><a href="#">Testimonials</a></li>
-			                    <li><a href="#">Jobs</a></li>
+			                <a class="kitchen-settings" href="#">Kitchen</a>
+			                <ul class="third-level-menu kitchen_settings">
+			                    <li><a class="kitchen-settings" href="#">Modern</a></li>
+			                    <li><a class="kitchen-settings" href="#"></a></li>
+			                    <li><a class="kitchen-settings" href="#"></a></li>
+			                </ul>
+			            </li>			            <li>
+			                <a class="kitchen-settings" href="#">Floor</a>
+			                <ul class="third-level-menu kitchen_settings">
+			                    <li><a class="kitchen-settings" href="#">wood</a></li>
+			                    <li><a class="kitchen-settings" href="#">white tile</a></li>
+			                    <li><a class="kitchen-settings" href="#">black tile</a></li>
 			                </ul>
 			            </li>
-			            <li><a href="#">asdf</a></li>
 			        </ul>
 			    </li>
 			</ul>
