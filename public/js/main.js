@@ -15,6 +15,10 @@ $(document).ready(function(){
       	event.stopPropagation();
       });
 
+      $('#btn_customize').click(function(){
+        window.location = '/kitchen_dreamer';
+      });
+
       showRight.onclick = function(e) {
       	e.stopPropagation();
         classie.toggle( this, 'active' );

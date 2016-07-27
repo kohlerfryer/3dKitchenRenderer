@@ -14,7 +14,8 @@ $(document).ready(function(){
 		$('#pick_stone_view').hide();	
 		$('#stone_info_view').show();
 
-		$('main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers?stone_id=' + $(this).attr('id'));
+		$('#main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers/' + $(this).attr('id'));
+		$('#main_counter_top').show();
 
 
 	});
@@ -42,7 +43,7 @@ $(document).ready(function(){
 		} 
 		if($('#square_feet').val().match(/[a-z]/i))
 		{
-			alert('Please provide the area of the desired dimensions in square feet. To calculate the area of a room in square feet, measure the length and width of the room in feet, then multiply these figures together to give an area in ft². \n\nExample: 150');
+			alert('Please provide the area of the desired dimensions in square feet. \n\nTo calculate the area of a countertop in square feet, measure the length and width of the countertop in feet, then multiply these figures together to give an area in ft². \n\nExample: 150');
 			return false;
 		} 
 

@@ -1,10 +1,39 @@
 @extends('layouts.page')
 
 @section('content')
+
+		<center hidden><h1>Get Your Custom Quote</h1>
+		<div id="quote" hidden>
+			<div style="width:350px">
+				<form id="">
+				<h4 style="display:inline-block">Countertop Dimensions</h4></br>
+				<input style="display:inline-block;width:90px" placeholder="Length"> X 
+				<input style="display:inline-block;width:90px" placeholder="Width"></br>
+				<h4 style="display:inline-block">Contains Sink?</h4></br>
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">Yes 
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">No </br>
+				<h4 style="display:inline-block">Seamless?</h4></br>
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">Yes 
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">No </br>
+				<h4 style="display:inline-block">Is it an island?</h4></br>
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">Yes 
+				<input type="radio" style="width:15px;height:15px;display:inline-block;box-shadow:none">No 
+				<h4>Edge</h4></br>
+				<select type="select" style="width:150px">
+					<option>select edge</option>
+				</select></br>
+
+
+				<button type="button" id="btn_submit_quote_info" style="color:white;font-size:15px;margin-top:20px;background-color:#f67555;border-radius:4px;width:150px;height:40px;border:none">Choose Countertop</button>
+				<span id="instant_quote" style="margin-top:33px;float:right"></span> 
+				</form>
+			</div>
+		</div>
+	</center>
 	<center>
 		<div class="kitchen_dreamer" style="position:relative">
 			<img src="images/kitchen_backgrounds/kitchen_2.jpg" height="500px" width="100%" style="position:absolute;top:0;left:0"/>
-			<img id="main_counter_top" src="/kitchen_dreamer/get_kitchen_counter_layers?stone_id=73" style="position:absolute;left:0px;top:0px;width:100%;height:100%">
+			<img id="main_counter_top" src="" style="position:absolute;left:0px;top:0px;width:100%;height:100%" hidden/>
 			<img src="images/gear-setting.png" height="25px" width="25px" id="settings_gear" style="position:absolute;left:0;absolute;top:0;margin:4px"/>
 			<ul class="top-level-menu" id="settings_drop_down" style="position:absolute;" >
 			    <li>
@@ -53,7 +82,7 @@
 			stone-picture-url="{{$stone->stone_picture_url}}"
 			class="stone_texture_tile" 
 			src="{{$stone->stone_texture_url}}" 
-			style="width:33%;height:300px;display:inline-block"
+			style="width:32.8%;height:300px;display:inline-block;"
 			/>
 		@endforeach
 
@@ -73,7 +102,7 @@
 
 		@if(isset($guest_data))
 			<div style="width:34%;display:inline-table;margin-left:3%">
-				<center><h2 style="margin-top:0px">Instant Quote</h2></center>
+				<center><h2 style="margin-top:0px">Quick Quote</h2></center>
 				<form id="instant_quote_form">
 				<h4>Name</h4>
 				<input id="name" name="name" value="{{$guest_data['name']}}">
@@ -108,6 +137,30 @@
 		@endif
 	</div>
 
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
 </br>
 </br>
 </br>

@@ -27,10 +27,10 @@
 <body>
   <div class="header">
     <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
-        <a href="#">Portfolio</a>
+        <a href="/">Home</a>
+        <a href="/portfolio">Portfolio</a>
         <a href="#">Quote</a>
-        <a href="#">About Us</a>
-        <a href="#">Faq</a>
+        <a href="/about_us">About Us</a>
       </nav>
 
      <div id="main_page_logo">
@@ -43,10 +43,11 @@
     <div class="navbar">
       <ul>
       <li><a href="#" >801-998-8195</a></li>
-      <li><a href="/" class="navbar_link">Portfolio</a></li>
+      <li><a href="/" class="navbar_link">Home</a></li>
+      <li><a href="/" class="navbar_link">Browse</a></li>
       <li><a href="/" class="navbar_link">Quote</a></li>
+      <li><a href="/" class="navbar_link">Portfolio</a></li>
       <li><a href="/" class="navbar_link">About Us</a></li>
-      <li><a href="/" class="navbar_link">Faq</a></li>
       </ul>
     </div>
   </div>

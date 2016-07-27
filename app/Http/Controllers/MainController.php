@@ -18,8 +18,8 @@ class MainController extends Controller
 
     public function get_kitchen_counter_layers($stone_id)
     {
-    $texture_url = DB::select('select texture_layout_url from texture where stone_id = ? and kitchen_id = ?', [$stone_id, 1]);
-    return (new Response(File::get(public_path().'/'.$texture_url[0]->texture_layout_url)))->header('content-type', 'image/png');
+        $texture_url = DB::select('select texture_layout_url from texture where stone_id = ? and kitchen_id = ?', [$stone_id, 1]);
+        return (new Response(File::get(public_path().'/'.$texture_url[0]->texture_layout_url)))->header('content-type', 'image/png');
     }
 
     public function get_kitchen_dreamer_view()
@@ -74,5 +74,13 @@ class MainController extends Controller
         $results['estimate'] = number_format($estimate);
         return json_encode($results);
 
+    }
+
+    public function  get_custom_quote_view()
+    {   
+        //for now just return initial view
+        return View::make('quote_summary');
+        //choose room & dimensions & number of counterotops ect....
+        //choose countertop view
     }
 }

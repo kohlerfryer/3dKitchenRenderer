@@ -98,7 +98,7 @@ public function add_image_to_directory($stone_type, $image)
       )
     );
 
-    $this->set_textures_kitchen_1($stone_id);
+    $this->set_textures_kitchen_1($stone_id, $stone_texture_url);
 
 
     $results['result'] = 'success';
@@ -123,7 +123,6 @@ public function add_image_to_directory($stone_type, $image)
      $stone_type = Input::get('stone_type');
      $stone_description = Input::get('stone_description');
      $stone_price = Input::get('stone_price');
-     //dd($stone_price);
      $stone_id = Input::get('stone_id');
      $stone_quantity = Input::get('stone_quantity');
 
@@ -151,6 +150,8 @@ public function add_image_to_directory($stone_type, $image)
         }
           $old_stone = DB::table('stone')->where('id', '=', $stone_id)->first();
           File::Delete($old_stone->stone_texture_url);
+          $this->set_textures_kitchen_1($stone_id, $stone_texture_url);
+
       }
       else $stone_texture_url = Input::get('stone_texture_url');
 
@@ -228,15 +229,24 @@ public function add_image_to_directory($stone_type, $image)
     }
 
     $stone_id = Input::get('stone_id');
-    DB::table('stone')->where('id', '=', Input::get('stone_id'))->delete();
+    $stone = DB::table('stone')->where('id', '=', $stone_id)->first();
+    File::delete($stone->stone_texture_url);
+    File::delete($stone->stone_picture_url);
+    DB::table('stone')->where('id', '=', $stone_id)->delete();
+
+    $stone_textures = DB::table('texture')->where('stone_id', '=', $stone_id)->get();
+    foreach($stone_textures as $stone_texture)
+    {
+      File::delete($stone_texture->texture_layout_url);
+    }
+    DB::table('texture')->where('stone_id', '=', $stone_id)->delete();
+
   }
 
-    public function set_textures_kitchen_1($stone_id)
+    public function set_textures_kitchen_1($stone_id, $stone_texture_url)
     {
 
-      $stone = DB::table('stone')->where('id', '=', $stone_id)->first();
-
-      $im = new Imagick($stone->stone_texture_url);
+      $im = new Imagick($stone_texture_url);
       $im2 = clone $im;
       $im3 = clone $im;
       $image_background = new Imagick();
@@ -324,13 +334,28 @@ public function add_image_to_directory($stone_type, $image)
       $image_file_name = rand(11111,99999) . '.png';
       File::put(public_path().'/images/texture_layouts/'.$image_file_name, $image_background);
 
-      DB::table('texture')->insert(
-        array(
-        'stone_id' => $stone_id , 
-        'kitchen_id' => '1',
-        'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
-        )
-      );
+      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('kitchen_id', '=', '1')->first();
+      if(isset($current_texture))
+      {
+        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('kitchen_id', '=', '1')->first();
+        File::delete($old_texture->texture_layout_url);
+        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('kitchen_id', '=', '1')->update(
+          array(
+          'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
+          )
+        );
+      }
+      
+      else{
+        DB::table('texture')->insert(
+          array(
+          'stone_id' => $stone_id , 
+          'kitchen_id' => '1',
+          'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
+          )
+        );
+      }
+
 
     }
 

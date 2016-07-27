@@ -20,10 +20,9 @@
 <body>
 	<div class="main_header">
 		<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
-	      <a href="#">Portfolio</a>
-	      <a href="#">Quote</a>
-	      <a href="#">About Us</a>
-	      <a href="#">Faq</a>
+	      <a href="/portfolio">Portfolio</a>
+	      <a href="/kitchen_dreamer">Browse</a>
+	      <a href="/about_us">About Us</a>
 	    </nav>
 		 <div id="main_page_logo">
 		 	<img src="images/mountain_logo.png" width="70px"/>
@@ -35,23 +34,36 @@
 		<div class="navbar">
 			<ul>
 			<li><a href="#" >801-998-8195</a></li>
-			<li><a href="/" class="navbar_link">Portfolio</a></li>
-			<li><a href="/" class="navbar_link">Quote</a></li>
-			<li><a href="/" class="navbar_link">About Us</a></li>
-			<li><a href="/" class="navbar_link">Faq</a></li>
+			<li><a href="/kitchen_dreamer" class="navbar_link">Browse</a></li>
+			<li><a href="/portfolio" class="navbar_link">Portfolio</a></li>
+			<li><a href="/about_us" class="navbar_link">About Us</a></li>
 			</ul>
 		</div>
+
 		<center>
 			<h1>Affordable Luxury</h2>
 			<h2>Find granite, quartz, and marble at a fraction of the cost</h2>
-			<button id="btn_get_quote">Get a Quote</button>
+			<button id="btn_get_quote">Online Custom Quote</button>
 		</center>
+
 		<div class="kitchen_builder_header">
 			<h3>Visualize your kitchen countertops with our custom online tool</h3>
-			<button>Customize</button>
+			<button id="btn_customize">Customize</button>
 		</div>
 	</div>
-<div style="width:100%;height:600px">
-</div>
+	<div class="tile_button" onclick="window.location='/kitchen_dreamer?selected_stone_type=quartz'">
+		<img src="images/quartz.jpg" width="100%" height="500px" >
+		<h1>Quartz</h1>
+	</div>
+	<div class="tile_button" onclick="window.location='/kitchen_dreamer?selected_stone_type=marble'">
+		<img src="images/marble.jpg" width="100%" height="500px" >
+		<div class="left">
+			<h1 >Marble</h1>
+		</div>
+	</div>
+	<div class="tile_button" onclick="window.location='/kitchen_dreamer?selected_stone_type=granite'">
+		<img src="images/granite.jpg" width="100%" height="500px" >
+			<h1>Granite</h1>
+	</div>
 </body>
 </html>
