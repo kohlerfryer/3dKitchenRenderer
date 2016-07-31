@@ -65,8 +65,14 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="password-confirm" class="col-md-4 control-label">I am an employee</label>
+                            <span style="margin-left:17px">yes</span><input type="radio" name="is_employee" class="form-control" style="width:15px;height:15px;margin-left:5px;display:inline-block" onclick="document.getElementById('employee_code').style.display='inline';
+">
+                            <span>no</span><input type="radio" name="is_employee"  class="form-control" style="width:15px;height:15px;margin-left:5px;display:inline-block" onclick="document.getElementById('employee_code').style.display='none';" checked>
 
-                        <div class="form-group{{ $errors->has('employee_code') ? ' has-error' : '' }}">
+                        </div>
+                        <div class="form-group{{ $errors->has('employee_code') ? ' has-error' : '' }}" id="employee_code" hidden>
                             <label for="employee-confirm" class="col-md-4 control-label">Employee Code</label>
 
                             <div class="col-md-6">

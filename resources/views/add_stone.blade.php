@@ -3,7 +3,7 @@
 @section('content')
 
 
-    <section class="content add_stone_section">
+    <section class="content add_stone_section" id="add_stone_section">
       <h1>
         Add Stone To Inventory
       </h1>
@@ -32,7 +32,6 @@
        <button type="submit">Submit</button>
      </form>
     </section>
-  </div>
 
   @endsection
 

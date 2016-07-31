@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <section class="content">
+    <section class="content" id="inventory_management_section">
       <h1>
         Inventory Management
       </h1>
@@ -60,6 +60,8 @@
           @endif
         </form>
     </section>
+
+
 
 @endsection
 

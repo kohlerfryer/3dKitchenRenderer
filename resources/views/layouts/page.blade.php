@@ -37,9 +37,11 @@
       <img src="images/mountain_logo_orange.png" width="60px"/>
       <img id="words_logo" src="images/mountain_words_logo_orange.png" width="140px"/>
      </div>
+
     <div class="navbar_mobile">
       <button id="showRight">Menu</button>
     </div>
+
     <div class="navbar">
       <ul>
       <li><a href="#" >801-998-8195</a></li>
@@ -48,6 +50,16 @@
       <li><a href="/" class="navbar_link">Quote</a></li>
       <li><a href="/" class="navbar_link">Portfolio</a></li>
       <li><a href="/" class="navbar_link">About Us</a></li>
+      @if(Auth::guest())
+        <li><a href="/login" class="navbar_link">Sign In</a></li>
+        @else
+        <li class="account_drop_down">
+          <a href="#" class="navbar_link" >Account</a>
+          <ul hidden>
+            <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
+          </ul>
+        </li>
+      @endif
       </ul>
     </div>
   </div>

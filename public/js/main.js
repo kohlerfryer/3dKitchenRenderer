@@ -5,6 +5,10 @@ $(document).ready(function(){
       var body = document.body;
       var menu_activated = false;
 
+      $('#btn_get_quote').click(function(){
+        window.location = '/custom_quote';
+      });
+
       $('#close_navbar').click(function(event){
       		event.stopPropagation();
       		showRight.onclick();

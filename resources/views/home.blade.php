@@ -37,6 +37,16 @@
 			<li><a href="/kitchen_dreamer" class="navbar_link">Browse</a></li>
 			<li><a href="/portfolio" class="navbar_link">Portfolio</a></li>
 			<li><a href="/about_us" class="navbar_link">About Us</a></li>
+			@if(Auth::guest())
+				<li><a href="/login" class="navbar_link">Sign In</a></li>
+	        @else
+		        <li class="account_drop_down">
+		          <a href="#" class="navbar_link" >Account</a>
+		          <ul hidden>
+		            <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
+		          </ul>
+		        </li>
+			@endif
 			</ul>
 		</div>
 

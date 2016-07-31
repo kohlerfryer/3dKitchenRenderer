@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	var last_clicked_texture_id = 0;
+
 	$('#stone_info_view #btn_back').click(function(){
 		$('#stone_info_view').hide();
 		$('#pick_stone_view').show();	
@@ -14,11 +16,26 @@ $(document).ready(function(){
 		$('#pick_stone_view').hide();	
 		$('#stone_info_view').show();
 
-		$('#main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers/' + $(this).attr('id'));
+		last_clicked_texture_id = $(this).attr('id');
+		$('#main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers/' + $(this).attr('id') + '/' + $('#background_image').attr('room_id'));
 		$('#main_counter_top').show();
 
 
 	});
+
+	$('.room').click(function(){
+
+		var picture_url = $(this).attr('picture_url');
+		$('#background_image').attr('src', picture_url);
+		$('#background_image').attr('room_id', $(this).attr('id'));
+		$('#main_counter_top').hide();
+		if(last_clicked_texture_id != 0)
+		{
+			$('#main_counter_top').attr('src', '/kitchen_dreamer/get_kitchen_counter_layers/' + last_clicked_texture_id + '/' + $(this).attr('id'));
+			$('#main_counter_top').show();
+		}	
+
+	});	
 
 
 	$('#btn_submit_quote_info').click(function(){

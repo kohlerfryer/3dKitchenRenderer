@@ -16,6 +16,8 @@ $(document).ready(function(){
     });
     
     $('#add_stone_form').submit(function(e){
+        $('#add_stone_section').hide();
+        $('#loading_section').show();
         e.preventDefault();
         var form_data = new FormData($(this)[0]);
        if(!$('#stone_type').val() || !$('#stone_description').val() || !$('#stone_price').val() || !$('#stone_quantity').val() || !$('#stone_image').val() || !$('#stone_texture').val() )
@@ -30,8 +32,10 @@ $(document).ready(function(){
             cache: false,
             contentType: false,
             processData: false,
-            async:false,
+            async:true,
         }).done(function(response){
+            $('#loading_section').hide();
+            $('#add_stone_section').show();
             response = JSON.parse(response);
             if(response.result == 'failure') alert(response.error_message);
             else {
@@ -42,6 +46,8 @@ $(document).ready(function(){
     });
 
     $('#btn_submit').click(function(){
+        $('#inventory_management_section').hide();
+        $('#loading_section').show();
         if($('#stone_texture').val()) $('#stone_texture_url').val('');
         if($('#stone_image').val()) $('#stone_image_url').val('');
         var form_data = new FormData($('#update_stone_form')[0]);
@@ -52,8 +58,10 @@ $(document).ready(function(){
             cache: false,
             contentType: false,
             processData: false,
-            async:false,
+            async:true,
         }).done(function(response){
+            $('#loading_section').hide();
+            $('#inventory_management_section').show();
             var response = JSON.parse(response);
             if(response.result == 'success')
             {

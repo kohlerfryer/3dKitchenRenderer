@@ -90,13 +90,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <!-- Optionally, you can add icons to the links -->
-        @if($current_page == 'add_stone')
-        <li class="active" ><a href="#"><i class="fa fa-link"></i> <span>Add Stone</span></a></li>
-        <li><a href="/admin/inventory_management" ><i class="fa fa-link"></i> <span>Inventory Management</span></a></li>
-        @else
-        <li  ><a href="/admin/add_stone"><i class="fa fa-link"></i> <span>Add Stone</span></a></li>
-        <li class="active"><a href="#"  ><i class="fa fa-link"></i> <span>Inventory Management</span></a></li>
-        @endif
+
+        <li  class=""><a href="/admin/add_stone"><i class="fa fa-plus"></i> <span>Add Stone</span></a></li>
+        <li class=""><a href="#"  ><i class="fa fa-gear"></i> <span>Inventory Management</span></a></li>
+        <li class=""><a href="/admin/new_quotes"  ><i class="fa fa-sticky-note"></i> <span>New Quotes </span><span style="color:red;margin-left:20px;font-size:15px">3</span></span></a></li>
+        <li class=""><a href="/admin/old_quotes"  ><i class="fa fa-sticky-note"></i> <span>Old Quotes</span></a></li>
 
       </ul>
       <!-- /.sidebar-menu -->
@@ -109,6 +107,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Content Header (Page header) -->
 
     @yield('content')
+    <section class="content" id="loading_section" hidden>
+      <center>
+        <img src="../images/loader.gif" width="100px" height="100px"/>
+        <h4>Updating Stone Information and rendering 3d room image layouts. Please Wait.</h4>
+        </center>
+    </section>
   </div>
   <!-- Main Footer -->
   <footer class="main-footer">

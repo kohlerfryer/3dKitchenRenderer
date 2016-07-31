@@ -29,6 +29,11 @@ body {
 
 button{
 	border-radius: 5px;
+	border:none;
+	background-color:#f56543;
+	color:white;
+	font-size:16px;
+	font-weight: lighter;
 }
 
 .header{
@@ -37,6 +42,7 @@ button{
 	height:100px;
 	color:white;
 }
+
 
 .footer{
 	background-color:#F5F5F5;
@@ -147,7 +153,6 @@ form input{
   -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
        -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-
 }
 
 #stone_info_view h4{
@@ -186,7 +191,6 @@ form input{
 }
 
 .main_header .navbar{
-	width:470px;
 	height:100px;
 	float:right;
 	margin-top:20px;
@@ -196,10 +200,8 @@ form input{
 }
 
 .navbar {
-	width:780px;
-	height:100px;
 	float:right;
-	margin-top:20px;
+	margin-top:30px;
 	font-size: 18px;
 	padding-right:20px;
 	overflow: hidden;
@@ -224,7 +226,8 @@ form input{
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 0px 16px;
+    padding-top:20px;
     text-decoration: none;
 }
 
@@ -232,7 +235,7 @@ form input{
     display: block;
     color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding: 5px 16px;
     text-decoration: none;
     font-weight: lighter;
 }
@@ -263,6 +266,7 @@ color:#F16739;
 	font-size: 24px;
 	margin-bottom:70px;
 	margin-top:70px;
+	color:black;
 }
 
 .kitchen_builder_header button{
@@ -396,24 +400,37 @@ margin-bottom:0px;
 
 .top-level-menu li:hover > ul
 {
-    /* On hover, display the next level's menu */
     display: inline;
 }
 
-
 /* Menu Link Styles */
 
-.top-level-menu a /* Apply to all links inside the multi-level menu */
+.top-level-menu a 
 {
     color: black;
     text-decoration: none;
     padding: 0 0 0 10px;
-    
-    /* Make the link cover the entire list item-container */
     display: block;
     line-height: 30px;
 }
 .top-level-menu a:hover { border-color:#f56543; color:#f56543;}
+
+.account_drop_down:hover ul{
+display:block;
+}
+
+.account_drop_down ul a{
+margin:auto;
+font-size: 16px;
+}
+
+.account_drop_down ul li{
+width:100%;
+}
+
+table tr th{
+	font-weight: lighter;
+}
 
 @media all and  ( max-width: 920px )  {
 	.navbar{
