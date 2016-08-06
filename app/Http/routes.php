@@ -2,12 +2,14 @@
 
 
 Route::get('/', function(){return View::make('home');});
+Route::get('/quote_summary', function(){return View::make('quote_summary');});//temporary
+
 Route::get('quote_dreamer', 'MainController@get_quote_dreamer_view');
 
 //Route::get('/{page_name}', 'MainController@get_page_request');
 
-Route::get('login', 'MainController@get_login_view');
-Route::get('register', 'MainController@get_register_view');
+Route::get('login', 'Auth\AuthController@get_login_view');
+Route::get('register', 'Auth\AuthController@get_register_view');
 
 
 Route::post('auth/login', 'Auth\AuthController@login');
@@ -26,4 +28,6 @@ Route::get('custom_quote', 'MainController@get_custom_quote_view');
 Route::get('kitchen_dreamer', 'MainController@get_kitchen_dreamer_view');
 Route::get('kitchen_dreamer/get_instant_quote', 'MainController@get_instant_quote');
 Route::get('kitchen_dreamer/get_kitchen_counter_layers/{stone_id}/{room_id}', 'MainController@get_kitchen_counter_layers');
+Route::get('kitchen_dreamer/delete_from_quote/{countertop_id}', 'MainController@delete_from_quote');
+Route::post('kithen_dreamer/add_stone_to_quote', 'MainController@add_stone_to_quote');
 

@@ -10,14 +10,13 @@
   <meta name="author" content="SitePoint">
   <meta name="viewport" content="width=device-width, maximum-scale=1">
 
+  <link rel="stylesheet" href=" {{asset('css/slider_menu.css')}}">
+  <link rel="stylesheet" href="{{asset('css/main.css')}}">
 
-  <link rel="stylesheet" href="../css/slider_menu.css">
-  <link rel="stylesheet" href="../css/main.css">
-
-  <script src="../js/jquery.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/classie.js"></script>
-  <script src="../js/kitchen_dreamer.js"></script>
+  <script src="{{asset('js/jquery.js')}}"></script>
+  <script src="{{asset('js/main.js')}}"></script>
+  <script src="{{asset('js/classie.js')}}"></script>
+  <script src= "{{asset('js/kitchen_dreamer.js')}}"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
@@ -34,8 +33,8 @@
       </nav>
 
      <div id="main_page_logo">
-      <img src="images/mountain_logo_orange.png" width="60px"/>
-      <img id="words_logo" src="images/mountain_words_logo_orange.png" width="140px"/>
+      <img  src="{{asset('images/mountain_logo_orange.png')}}" width="60px"/>
+      <img id="words_logo" src="{{asset('images/mountain_words_logo_orange.png')}}" width="140px"/>
      </div>
 
     <div class="navbar_mobile">
@@ -54,7 +53,7 @@
         <li><a href="/login" class="navbar_link">Sign In</a></li>
         @else
         <li class="account_drop_down">
-          <a href="#" class="navbar_link" >Account</a>
+          <a href="#" class="navbar_link" >{{Auth::user()->name}}</a>
           <ul hidden>
             <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
           </ul>

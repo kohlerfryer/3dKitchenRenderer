@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Input;
 use Auth;
 use DB;
 use Hash;
+use View;
+use Session;
 
 class AuthController extends Controller
 {
@@ -80,8 +82,33 @@ class AuthController extends Controller
 
     protected function logout()
     {
+        Session::flush();
         Auth::logout();
         return redirect('/');
+
+    }
+
+    public function get_login_view()
+    {
+        if(Auth::guest())return View::make('auth/login');
+        
+        $authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
+        if($authorization[0]->authorization == '1')
+        return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
+        else
+        return View::make('home');
+
+    }
+
+    public function get_register_view()
+    {
+        if(Auth::guest())return View::make('auth/register');
+        
+        $authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
+        if($authorization[0]->authorization == '1')
+        return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
+        else
+        return View::make('home');
 
     }
 }

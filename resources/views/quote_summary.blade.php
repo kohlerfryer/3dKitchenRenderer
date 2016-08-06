@@ -1,14 +1,25 @@
 @extends('layouts.page')
 
 @section('content')
-	<script>
-		$(document).ready(function(){
-			$('#btn_enter_step_2').click(function(){
-				$('#quote_summary_step_1').hide();
-				$('#edit_room').show();
-			});
-		});
-	</script>
+<center style="margin-top:20px">
+	<div style="width:100%;max-width:900px;background-color:#F5F5F5;padding-top:20px;padding:20px;position:relative">
+		<h2 style="position:absolute;top:10px;left:30px">Quote</h2><h3 class="selected" style="position:absolute;top:10px;right:30px"><a href="/kitchen_dreamer">Edit</a></h3>
+			<table style="width:100%;font-family:helvetica;font-weight:lighter;margin-top:80px">
+				@if(isset($quote_data))
+						@foreach($quote_data['countertops'] as $key => $countertop)
+							<tr>
+							@foreach($countertop as $quote_data)
+								<th>{{$quote_data}}</th>
+							@endforeach
+							</tr>
+						@endforeach
+				@endif
+			</table>
+			<h2 class="selected" align="left" >Estimate: $5,000</h2>	
+			<h3 align="left">Call us for more information at 801-998-8195</h3>
+		</center>
+</div>
+<!--
 		
 		<center>
 			<div id="quote_summary_step_1" style="width:800px;position:relative;padding-bottom:80px;" >
@@ -52,7 +63,7 @@
 						<th><a href="#">Edit</a></th>
 						<th>Master Bathroom</th>
 						<th>1</th>
-					</tr>-->
+					</tr>--><!--
 				</table>
 				<select id="select_room" style="width:150px;height:100px;font-size:30px;position:absolute;right:130px;bottom:0px;width:110px;height:30px">
 					<option>Bathroom</option>
@@ -68,9 +79,9 @@
 				<!--<select>
 					<option>select type</option>
 				</select>-->
-				<table style="width:100%;padding:20px;background-color:#F5F5F5;font-family:helvetica;font-weight:lighter;margin-top:20px">
+				<!--<table style="width:100%;padding:20px;background-color:#F5F5F5;font-family:helvetica;font-weight:lighter;margin-top:20px">
 					<!--<tr><th>No Countertops selected</th></tr>-->
-					<tr>
+					<!--<tr>
 						<th><a href="#">Edit</a></th>
 						<th>Island 1</th>
 						<th>200" X 200"</th>
@@ -132,5 +143,5 @@
 			</div>
 		</div>
 	</center>
-
+-->
 @endsection

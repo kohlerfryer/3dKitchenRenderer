@@ -6,6 +6,16 @@ $(document).ready(function(){
 		$('#pick_stone_view').show();	
 	});
 
+	$('#add_stone_form').submit(function(){
+		var form = $(this)[0]; 
+		var formData = new FormData(form);
+		if(!formData.has('seamless') || !formData.has('shape') || !formData.has('sink'))
+		{
+			alert('Please provide all counter details.');
+			return false;
+		}
+	});
+
 	$('.stone_texture_tile').click(function(){
 		$('#stone_info_view #stone_title').html($(this).attr('stone-title'));
 		$('#stone_info_view #stone_description').html($(this).attr('stone-description'));
@@ -13,6 +23,8 @@ $(document).ready(function(){
 		$('#stone_info_view #instock_quantity').html('In Stock Quantity: ' + $(this).attr('in-stock-quantity'));
 		$('#stone_info_view #quote_stone_id').val($(this).attr('id'));
 		
+		$('#input_stone_id').val($(this).attr('id'));
+
 		$('#pick_stone_view').hide();	
 		$('#stone_info_view').show();
 
@@ -37,44 +49,38 @@ $(document).ready(function(){
 
 	});	
 
+	$('.stone_type').click(function(){
+		window.location = $(this).attr('link') + '&selected_room_id=' + $('#background_image').attr('room_id'); 
+	});
+
 
 	$('#btn_submit_quote_info').click(function(){
-		var square_feet = $('#square_feet').val();
-		$('#square_feet').val(square_feet.replace(/\,/g,""));
-		var form_data = $('#instant_quote_form').serialize();
-
-		if(!$('#name') || !$('#email') || !$('#phone_number') || !$('#square_feet'))
-		{
-			alert('Please specify all related fields.');
-			return false;
-		}
-		if(!$('#email').val().includes('@') || !$('#email').val().includes('.com'))
-		{
-			alert('Please provide a valid email address.');
-			return false;
-		} 
-		if($('#phone_number').val().length < 9 || $('#phone_number').val().match(/[a-z]/i))
-		{
-			alert('Please provide a valid phone_number with area code.');
-			return false;
-		} 
-		if($('#square_feet').val().match(/[a-z]/i))
-		{
-			alert('Please provide the area of the desired dimensions in square feet. \n\nTo calculate the area of a countertop in square feet, measure the length and width of the countertop in feet, then multiply these figures together to give an area in ft². \n\nExample: 150');
-			return false;
-		} 
-
 		$.ajax({
-			data: form_data,
 			url: '/kitchen_dreamer/get_instant_quote',
 			failure: function(){
 				alert('sorry an error ocurred');
 			},
 			success: function(response){
 				response = JSON.parse(response);
-				$('#instant_quote').html('$ ' + response.estimate);
+				window.location.reload();
+				//$('#instant_quote').html('$ ' + response.estimate);
 			}
 		});
+	});
+
+	$('#btn_view_dimensions').click(function(){
+		if(!$('input[name=shape]:checked').val())
+		{
+			alert('Please first selectet countertop type');
+			return false;
+		}
+		$('#add_stone_table').hide();
+		$('#dimensions-' + $('input[name=shape]:checked').val()).show();
+	});
+
+	$('.btn_hide_dimensions').click(function(){
+		$('#dimensions-' + $('input[name=shape]:checked').val()).hide();
+		$('#add_stone_table').show();
 	});
 
 

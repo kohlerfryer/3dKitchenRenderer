@@ -20,6 +20,7 @@ class AdminController extends Controller
 public function __construct()
 {
   $this->middleware('auth');
+  $this->middleware('admin');
 }
 
 
@@ -107,6 +108,8 @@ public function add_image_to_directory($stone_type, $image)
     );
 
     $this->set_textures_kitchen_1($stone_id, $stone_texture_url);
+    $this->set_textures_kitchen_2($stone_id, $stone_texture_url);
+    $this->set_textures_bathroom_1($stone_id, $stone_texture_url);
 
 
     $results['result'] = 'success';
@@ -159,6 +162,7 @@ public function add_image_to_directory($stone_type, $image)
           $old_stone = DB::table('stone')->where('id', '=', $stone_id)->first();
           File::Delete($old_stone->stone_texture_url);
           $this->set_textures_kitchen_1($stone_id, $stone_texture_url);
+          $this->set_textures_kitchen_2($stone_id, $stone_texture_url);
           $this->set_textures_bathroom_1($stone_id, $stone_texture_url);
 
 
@@ -231,7 +235,6 @@ public function add_image_to_directory($stone_type, $image)
 
   public function delete_stone()
   {
-
     if(!Input::has('stone_id'))
     {
       $results['error_message'] = 'Stone Id Field Missing';
@@ -241,6 +244,7 @@ public function add_image_to_directory($stone_type, $image)
     $stone_id = Input::get('stone_id');
     $stone = DB::table('stone')->where('id', '=', $stone_id)->first();
     File::delete($stone->stone_picture_url);
+    File::delete($stone->stone_texture_url);
     DB::table('stone')->where('id', '=', $stone_id)->delete();
 
     $stone_textures = DB::table('texture')->where('stone_id', '=', $stone_id)->get();
@@ -252,7 +256,7 @@ public function add_image_to_directory($stone_type, $image)
 
   }
 
-    public function set_textures_kitchen_1($stone_id, $stone_texture_url)
+    public function set_textures_kitchen_2($stone_id, $stone_texture_url)
     {
 
       $im = new Imagick($stone_texture_url);
@@ -483,12 +487,12 @@ public function add_image_to_directory($stone_type, $image)
       $image_file_name = rand(11111,99999) . '.png';
       File::put(public_path().'/images/texture_layouts/'.$image_file_name, $image_background);
 
-      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('room_id', '=', '1')->first();
+      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('room_id', '=', '2')->first();
       if(isset($current_texture))
       {
-        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '1')->first();
+        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '2')->first();
         File::delete($old_texture->texture_layout_url);
-        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '1')->update(
+        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '2')->update(
           array(
           'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
           )
@@ -499,7 +503,7 @@ public function add_image_to_directory($stone_type, $image)
         DB::table('texture')->insert(
           array(
           'stone_id' => $stone_id , 
-          'room_id' => '1',
+          'room_id' => '2',
           'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
           )
         );
@@ -611,12 +615,12 @@ public function set_textures_bathroom_1($stone_id, $stone_texture_url)
       $image_file_name = rand(11111,99999) . '.png';
       File::put(public_path().'/images/texture_layouts/'.$image_file_name, $image_background);
 
-      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('room_id', '=', '2')->first();
+      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('room_id', '=', '3')->first();
       if(isset($current_texture))
       {
-        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '2')->first();
+        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '3')->first();
         File::delete($old_texture->texture_layout_url);
-        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '2')->update(
+        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '3')->update(
           array(
           'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
           )
@@ -627,7 +631,217 @@ public function set_textures_bathroom_1($stone_id, $stone_texture_url)
         DB::table('texture')->insert(
           array(
           'stone_id' => $stone_id , 
-          'room_id' => '2',
+          'room_id' => '3',
+          'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
+          )
+        );
+      }
+
+
+    }
+
+public function set_textures_kitchen_1($stone_id, $stone_texture_url)
+    {
+
+      $im = new Imagick($stone_texture_url);
+      $im2 = clone $im;
+      $im3 = clone $im;
+      $im4 = clone $im;
+      $im5 = clone $im;
+      $im6 = clone $im;
+      $im7 = clone $im;
+      $im8 = clone $im;
+      //$im4 = clone $im;
+
+      $image_background = new Imagick();
+      //$image_texture = new Imagick('images/room_backgrounds/bathroom_1_layers.png');
+      //$image_texture->adaptiveResizeImage(900,500);
+
+      $image_background->newImage(900, 500, 'transparent');
+      $image_background->setimagebackgroundcolor("transparent");
+
+      $im->adaptiveResizeImage(900,500);
+      $im2->cropImage(900,20,0,0);
+      $im2->adaptiveResizeImage(900,500);
+      $im3->cropImage(20,500,0,0);
+      $im3->adaptiveResizeImage(900,500);
+
+      $im4->adaptiveResizeImage(900,500);
+      $im5->cropImage(900,20,0,0);
+      $im5->adaptiveResizeImage(900,500);
+      $im6->cropImage(20,500,0,0);
+      $im6->adaptiveResizeImage(900,500);
+
+      $im7->cropImage(900,500,0,0);
+      $im7->adaptiveResizeImage(900,500);
+      $im8->cropImage(20,500,0,0);
+      $im8->adaptiveResizeImage(900,15);
+
+      //$im6->adaptiveResizeImage(900,500);
+      //$im7->adaptiveResizeImage(900,500);
+
+      $controlPoints = array( 
+        0, 0, 
+        413, 226,
+
+        0, 500,
+        130, 271,       
+
+        900, 0,
+        567, 242,
+
+        900, 500,
+        302, 336
+      );
+
+      $controlPoints2 = array( 
+        0, 0, 
+        130, 271,
+
+        0, 500,
+        130, 279,       
+
+        900, 0,
+        302, 336,
+
+        900, 500,
+        302, 348
+      );
+
+      $controlPoints3 = array( 
+        0, 0, 
+        567, 242,
+
+        0, 500,
+        302, 336,     
+
+        900, 0,
+        567, 248,
+
+        900, 500,
+        302, 348
+      );
+
+      $controlPoints4 = array( 
+        0, 0, 
+        221, 218,
+
+        0, 500,
+        27, 233,       
+
+        900, 0,
+        253, 223,
+
+        900, 500,
+        52, 243
+      );
+
+      $controlPoints5 = array( 
+        0, 0, 
+        27, 233,
+
+        0, 500,
+        27, 239,     
+
+        900, 0,
+        52, 243,
+
+        900, 500,
+        52, 248
+      );
+
+      $controlPoints6 = array( 
+        0, 0, 
+        253, 223,
+
+        0, 500,
+        52, 243,       
+
+        900, 0,
+        253, 227,
+
+        900, 500,
+        52, 248
+      );
+
+      $controlPoints7 = array( 
+        0, 0, 
+        384, 202,
+
+        0, 500,
+        384, 210,     
+
+        900, 0,
+        828, 232,
+
+        900, 500,
+        828, 244
+      );
+
+      $controlPoints8 = array( 
+        0, 0, 
+        400, 210,
+
+        0, 500,
+        384, 225,       
+
+        900, 0,
+        828, 200,
+
+        900, 500,
+        828, 300
+      );
+      $im->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im2->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im3->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im4->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im5->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im6->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im7->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im8->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+
+      $im->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints, true);
+      $im2->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints2, true);
+      $im3->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints3, true);
+      $im4->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints4, true);
+      $im5->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints5, true);
+      $im6->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints6, true);
+      $im7->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints7, true);
+      $im8->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints8, true);
+
+      $image_background->addImage($im);
+      $image_background->addImage($im2);
+      $image_background->addImage($im3);
+      $image_background->addImage($im4);
+      $image_background->addImage($im5);
+      $image_background->addImage($im6);
+      $image_background->addImage($im7);
+      $image_background->addImage($im8);
+
+      //$image_background->addImage($image_texture);
+      $image_background = $image_background->mergeImageLayers(Imagick::LAYERMETHOD_UNDEFINED);
+      $image_background->setFormat("png");
+
+      $image_file_name = rand(11111,99999) . '.png';
+      File::put(public_path().'/images/texture_layouts/'.$image_file_name, $image_background);
+
+      $current_texture = DB::table('texture')->where('stone_id', '=', $stone_id)->where('room_id', '=', '1')->first();
+      if(isset($current_texture))
+      {
+        $old_texture = DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '1')->first();
+        File::delete($old_texture->texture_layout_url);
+        DB::table('texture')->where('stone_id', '=' , $stone_id)->where('room_id', '=', '1')->update(
+          array(
+          'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
+          )
+        );
+      }
+      
+      else{
+        DB::table('texture')->insert(
+          array(
+          'stone_id' => $stone_id , 
+          'room_id' => '1',
           'texture_layout_url' => 'images/texture_layouts/'. $image_file_name
           )
         );

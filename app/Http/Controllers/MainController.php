@@ -13,14 +13,20 @@ use ImagickPixel;
 use Illuminate\Http\Response;
 use File;
 use Auth;
+use DateTime;
 
 class MainController extends Controller
 {
 
+
+    public function __construct()
+    {
+      $this->middleware('auth');
+    }
+
     public function get_kitchen_counter_layers($stone_id, $room_id)
     {
         $texture_url = DB::select('select texture_layout_url from texture where stone_id = ? and room_id = ?', [$stone_id, $room_id]);
-        //echo($room_id);
         return (new Response(File::get(public_path().'/'.$texture_url[0]->texture_layout_url)))->header('content-type', 'image/png');
     }
 
@@ -30,9 +36,9 @@ class MainController extends Controller
         $page_data['stone_types'] = DB::select('select * from stone_types');
         if(Session::get('guest_data')) $page_data['guest_data'] = Session::get('guest_data');
         $page_data['room_backgrounds'] = DB::select('select * from background_rooms');
-        if(Input::has('selected_room_id')) $page_data['selected_room'] = DB::select('select * from background_rooms where id = ?', [Input::get('selected_room')]);
+        if(Input::has('selected_room_id')) $page_data['selected_room'] = DB::select('select * from background_rooms where id = ?', [Input::get('selected_room_id')])[0];
         else{
-            $page_data['selected_room'] = $page_data['room_backgrounds'][1];
+            $page_data['selected_room'] = $page_data['room_backgrounds'][0];
         }
         if(Input::has('selected_stone_type'))
         {
@@ -72,11 +78,59 @@ class MainController extends Controller
         return view('quote_dreamer', $page_data);
     }
 
+    public function add_stone_to_quote()
+    {
+        $quote_data = [];
+       
+        if(Session::has('quote_data')) $quote_data = Session::get('quote_data');
+        $quote_data['countertops'][] = array('room_type' => Input::get('room_type'), 'corner_type' => Input::get('corner_type'), 'shape' => Input::get('shape'), 'sink' => Input::get('sink'), 'seamless' => Input::get('seamless'), 'stone_id' => Input::get('stone_id'));
+        Session::put('quote_data', $quote_data);
+        return $this->get_kitchen_dreamer_view();
+    }
+
+    public function delete_from_quote($countertop_id)
+    {
+        $quote_data = Session::get('quote_data');
+        if(sizeof($quote_data['countertops']) == 1)
+        {     //var_dump($quote_data);
+              Session::forget('quote_data');
+        }
+        else { 
+            unset($quote_data['countertops'][$countertop_id]);
+            Session::put('quote_data', $quote_data); 
+        } 
+
+        return $this->get_kitchen_dreamer_view();
+    }
+
     public function get_instant_quote()
     {
-        $results = [];
-        $results['result'] = 'failure';
 
+        $quote_data = Session::get('quote_data');
+        if(array_key_exists('quote_id', $quote_data))
+        {
+          DB::table('quotes')->where('id', '=' , $quote_data['quote_id'])->update(
+            array(
+              'quote' => json_encode($quote_data['countertops'])
+            )
+          );
+        }
+        else{
+            $date = new DateTime();
+            $quote_data['quote_id'] = DB::table('quotes')->insertGetId(
+              array(
+              'user_email' => Auth::user()->email, 
+              'created_at' =>  $date->format('Y-m-d'),
+              'quote' => json_encode($quote_data),
+              'viewed' => false
+              )
+            );
+        }
+         Session::put('quote_data', $quote_data);
+         return View::make('quote_summary', ['quote_data' => $quote_data]);
+
+
+/*
         if(!Input::has('stone_id') || !Input::has('square_feet') || !Input::has('email') || !Input::has('name') || !Input::has('phone_number'))
         {
             $results['error_message'] = 'Please Specify All Related Fields';
@@ -89,9 +143,10 @@ class MainController extends Controller
         $stone = DB::table('stone')->where('id', '=', Input::get('stone_id'))->first();
 
         $estimate = $stone->stone_price_per_square_foot * (int) Input::get('square_feet');
-        $results['result'] = 'success';
+        
         $results['estimate'] = number_format($estimate);
-        return json_encode($results);
+        */
+
 
     }
 
@@ -103,27 +158,4 @@ class MainController extends Controller
         //choose countertop view
     }
 
-    public function get_login_view()
-    {
-        if(Auth::guest())return View::make('auth/login');
-        
-        $authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
-        if($authorization[0]->authorization == '1')
-        return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
-        else
-        return View::make('home');
-
-    }
-
-    public function get_register_view()
-    {
-        if(Auth::guest())return View::make('auth/register');
-        
-        $authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
-        if($authorization[0]->authorization == '1')
-        return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
-        else
-        return View::make('home');
-
-    }
 }

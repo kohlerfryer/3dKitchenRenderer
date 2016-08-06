@@ -41,7 +41,7 @@
 				<li><a href="/login" class="navbar_link">Sign In</a></li>
 	        @else
 		        <li class="account_drop_down">
-		          <a href="#" class="navbar_link" >Account</a>
+		          <a href="#" class="navbar_link" >{{Auth::user()->name}}</a>
 		          <ul hidden>
 		            <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
 		          </ul>
