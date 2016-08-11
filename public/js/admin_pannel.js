@@ -45,6 +45,10 @@ $(document).ready(function(){
         });
     });
 
+    $('#select_quote_input').change(function(){
+         $('#search_quote_form').submit();
+     });
+
     $('#btn_submit').click(function(){
         $('#inventory_management_section').hide();
         $('#loading_section').show();
@@ -73,6 +77,7 @@ $(document).ready(function(){
 
 
     $('#inventory_stone_type').change(function(){
+        $('#input_dimensions').val('');
         $('#update_stone_form').attr('action', '/admin/inventory_management');
         $('#stone_type').val('');
         $('#stone_id').val('');

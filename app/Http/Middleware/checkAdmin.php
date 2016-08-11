@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Auth;
 
+
 class checkAdmin
 {
     /**
@@ -21,4 +22,5 @@ class checkAdmin
         else
         return redirect('/');
     }
+
 }

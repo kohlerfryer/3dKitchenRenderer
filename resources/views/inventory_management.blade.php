@@ -41,6 +41,16 @@
                 Name</br>
                 <input id="stone_name" name="stone_name" value="{{$selected_stone->stone_name}}"></br></br>
                 <button type="button" id="btn_delete_stone">Delete Stone</button></br></br>
+                Stone Group</br>
+                <select name="group" id="stone_group" style="width:150px">
+                  @foreach($stone_groups as $stone_group)
+                     @if(trim($selected_stone->group_id) == trim($stone_group->id))
+                      <option value="{{trim($stone_group->id)}}" selected>{{$stone_group->name}}</option>
+                     @else
+                      <option value="{{trim($stone_group->id)}}">{{$stone_group->name}}</option>
+                     @endif
+                  @endforeach
+                </select></br></br>
                 Price Per Square Foot</br>
                 <input id="stone_price" name="stone_price" value="{{$selected_stone->stone_price_per_square_foot}}"></br></br>
                 In-stock Quantity</br>

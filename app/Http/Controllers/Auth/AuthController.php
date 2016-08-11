@@ -20,7 +20,9 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'phone' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
             'employee_code' => 'max:20',
@@ -30,7 +32,7 @@ class AuthController extends Controller
     protected function register()
     {
         $user_authorization = 2;
-        $data = array('name' => Input::get('name'), 'email' => Input::get('email'), 'password' => Input::get('password'), 'password_confirmation' => Input::get('password_confirmation'));
+        $data = array('first_name' => Input::get('first_name'), 'last_name' => Input::get('last_name'), 'phone' => Input::get('phone'), 'email' => Input::get('email'), 'password' => Input::get('password'), 'password_confirmation' => Input::get('password_confirmation'));
         $validator = $this->validator($data);
         if(Input::has('employee_code'))
         {
@@ -53,7 +55,9 @@ class AuthController extends Controller
         }
 
         User::create([
-            'name' => $data['name'],
+            'first_name' => ucfirst(strtolower($data['first_name'])),
+            'last_name' => ucfirst(strtolower($data['last_name'])),
+            'phone' => $data['phone'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'authorization' => $user_authorization,

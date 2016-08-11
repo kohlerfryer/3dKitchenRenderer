@@ -46,34 +46,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <span class="logo-lg"><b>Admin Panel</span>
     </a>
 
-    <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
-      <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Messages: style can be found in dropdown.less-->
           <li>
           <a href="/" class="fa fa-home" style="font-size:19px" role="button">
           </a>
           </li>
-          <!-- User Account Menu -->
           <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <!-- The user image in the navbar-->
-              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">Welcome {{$user_name->name}}!</span>
+              <span class="hidden-xs" style="font-family:Source Sans Pro;font-weight:normal">Welcome {{$user_name->first_name}}!</span>
             </a>
           </li>
+          @if ($new_quotes_count > 0)
+          <li>
+            <a href="/admin/new_quotes" class="fa fa-flag" style="font-size:18px;" role="button"><span style="font-size:14px;font-family:Source Sans Pro;padding-left:10px">{{$new_quotes_count}} new quotes</span></a>
+          </li>
+          @endif
           <li class="user-menu">
             <a href="#" class="btn btn-flat" id="btn_sign_out">Sign out</a>
           </li>
-          <!-- Control Sidebar Toggle Button -->
-
         </ul>
       </div>
     </nav>
@@ -83,23 +78,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-
-
-      <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <!-- Optionally, you can add icons to the links -->
-
-        <li  class=""><a href="/admin/add_stone"><i class="fa fa-plus"></i> <span>Add Stone</span></a></li>
-        <li class=""><a href="#"  ><i class="fa fa-gear"></i> <span>Inventory Management</span></a></li>
-        <li class=""><a href="/admin/new_quotes"  ><i class="fa fa-sticky-note"></i> <span>New Quotes </span><span style="color:red;margin-left:20px;font-size:15px">3</span></span></a></li>
-        <li class=""><a href="/admin/old_quotes"  ><i class="fa fa-sticky-note"></i> <span>Old Quotes</span></a></li>
-
+        @foreach ($current_admin_pages as $name => $link)
+          @if($link == $page_request)
+            <li  class="active"><a href="{{$link}}"><i class=""></i><span>{{$name}}</span></a></li>
+          @else
+            <li  class=""><a href="{{$link}}"><i class=""></i><span>{{$name}}</span></a></li>
+          @endif
+        @endforeach 
       </ul>
-      <!-- /.sidebar-menu -->
     </section>
-    <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->

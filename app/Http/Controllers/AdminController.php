@@ -30,24 +30,41 @@ public function page_request($page_request)
   $page_data['current_page'] = $page_request;
   $page_data['user_name'] = Auth::user();
   $page_data['stone_types'] = DB::select('select * from stone_types');
+  $page_data['new_quotes_count'] = DB::table('quotes')->where('viewed', '=', 0)->count();
+  $page_data['page_request'] = $page_request;
+  $page_data['stone_groups'] = DB::select('select * from stone_groups');
+
+  $page_data['current_admin_pages'] = array('Add Stone' => 'add_stone', 'Inventory Management' => 'inventory_management','New Quotes' => 'new_quotes', 'Old Quotes' => 'old_quotes');
 
   if($page_request == 'inventory_management')
   {
-    if(Input::has('stone_type'))
-    {
-      $page_data['selected_stone_type'] = Input::get('stone_type');
-      $page_data['stones'] = DB::select('select * from stone where stone_type = ?',[Input::get('stone_type')]);
-    }
     if(Input::has('stone_id')) $page_data['selected_stone'] = DB::table('stone')->where('id', '=', Input::get('stone_id'))->first();
   }
-
-  if($page_request == 'quotes')
+  else if($page_request == 'new_quotes')
   {
      $new_quotes = DB::table('quotes')->where('viewed', '=', 0)->get();
      if(!empty($new_quotes)) $page_data['new_quotes'] = $new_quotes;
-     $old_quotes = DB::table('quotes')->where('viewed', '=', 1)->take(30)->get();
-     if(!empty($old_quotes)) $page_data['old_quotes'] = $old_quotes;
   }
+  else if($page_request == 'old_quotes')
+  {
+     $old_quotes = DB::table('quotes')->where('viewed', '=', 1)->get();
+     if(!empty($old_quotes))$page_data['old_quotes'] = $old_quotes;
+  }
+
+  if(Input::has('stone_type'))
+  {
+    $page_data['selected_stone_type'] = Input::get('stone_type');
+    $page_data['stones'] = DB::select('select * from stone where stone_type = ?',[Input::get('stone_type')]);
+  }
+
+   if(Input::has('selected_quote_id'))
+   {
+    $quote_object = DB::table('quotes')->where('id', '=', Input::get('selected_quote_id'))->first();
+    $page_data['selected_quote'] = json_decode($quote_object->quote);
+    $page_data['user_info'] = DB::table('users')->where('email', '=',  $quote_object->user_email)->first();
+    $page_data['selected_quote_id'] = Input::get('selected_quote_id');
+    DB::table('quotes')->where('id', '=' , Input::get('selected_quote_id'))->update(array('viewed' => true));
+   }
 
   return View::make($page_request, $page_data);
 }
@@ -73,7 +90,7 @@ public function add_image_to_directory($stone_type, $image)
     $results = [];
     $results['result'] = 'failure';
 
-    if(!Input::has('stone_name') || !Input::has('stone_type') ||  !Input::has('stone_description') ||  !Input::has('stone_price') ||  !Input::has('stone_quantity'))
+    if(!Input::has('stone_name') || !Input::has('stone_type') ||  !Input::has('stone_description') ||  !Input::has('stone_price') ||  !Input::has('stone_quantity') ||  !Input::has('group'))
     {
       $results['error_message'] = 'please specify all fields';
       return json_encode($results);      
@@ -83,6 +100,11 @@ public function add_image_to_directory($stone_type, $image)
     $stone_type = Input::get('stone_type');
     $stone_description = Input::get('stone_description');
     $stone_price = Input::get('stone_price');
+    $group = Input::get('group');
+    //remove all characters besides . and numbers 
+    $stone_price = preg_replace('/[^\\d.]+/', '', $stone_price);
+    //remove white space and convert to double
+    $stone_price = (double) str_replace(' ', '', $stone_price);
     $stone_quantity = Input::get('stone_quantity');
 
     $stone_image_url = $this->add_image_to_directory($stone_type, Input::file('stone_image'));
@@ -103,7 +125,8 @@ public function add_image_to_directory($stone_type, $image)
       'stone_description' => $stone_description, 
       'stone_picture_url' => $stone_image_url ,
       'stone_price_per_square_foot' =>$stone_price,
-      'stone_texture_url' => $stone_texture_url
+      'stone_texture_url' => $stone_texture_url,
+      'group_id' => $group
       )
     );
 
@@ -136,6 +159,7 @@ public function add_image_to_directory($stone_type, $image)
      $stone_price = Input::get('stone_price');
      $stone_id = Input::get('stone_id');
      $stone_quantity = Input::get('stone_quantity');
+     $group = Input::get('group');
 
 
       if(!Input::has('stone_image_url'))
@@ -177,7 +201,8 @@ public function add_image_to_directory($stone_type, $image)
         'stone_description' => $stone_description, 
         'stone_picture_url' => $stone_image_url ,
         'stone_price_per_square_foot' => $stone_price ,
-        'stone_texture_url' => $stone_texture_url
+        'stone_texture_url' => $stone_texture_url,
+        'group_id' => $group,
         )
       );
 

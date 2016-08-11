@@ -6,7 +6,7 @@ $(document).ready(function(){
       var menu_activated = false;
 
       $('#btn_get_quote').click(function(){
-        window.location = '/custom_quote';
+        window.location = '/kitchen_dreamer';
       });
 
       $('#close_navbar').click(function(event){

@@ -33,15 +33,15 @@
 		</div>
 		<div class="navbar">
 			<ul>
+			<li><a href="#" >13231 Minuteman Dr Draper, UT</a></li>
 			<li><a href="#" >801-998-8195</a></li>
-			<li><a href="/kitchen_dreamer" class="navbar_link">Browse</a></li>
 			<li><a href="/portfolio" class="navbar_link">Portfolio</a></li>
 			<li><a href="/about_us" class="navbar_link">About Us</a></li>
 			@if(Auth::guest())
-				<li><a href="/login" class="navbar_link">Sign In</a></li>
+				<li><a href="/register" class="navbar_link">Sign In</a></li>
 	        @else
 		        <li class="account_drop_down">
-		          <a href="#" class="navbar_link" >{{Auth::user()->name}}</a>
+		          <a href="#" class="navbar_link" >{{Auth::user()->first_name}}</a>
 		          <ul hidden>
 		            <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
 		          </ul>
@@ -53,7 +53,7 @@
 		<center>
 			<h1>Affordable Luxury</h2>
 			<h2>Find granite, quartz, and marble at a fraction of the cost</h2>
-			<button id="btn_get_quote">Online Custom Quote</button>
+			<button id="btn_get_quote">Get Custom Quote</button>
 		</center>
 
 		<div class="kitchen_builder_header">

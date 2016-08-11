@@ -24,52 +24,54 @@
 </head>
 
 <body>
-  <div class="header">
-    <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
-        <a href="/">Home</a>
-        <a href="/portfolio">Portfolio</a>
-        <a href="#">Quote</a>
-        <a href="/about_us">About Us</a>
-      </nav>
+  <div class="wrapper">
+    <div class="header">
+      <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+          <a href="/">Home</a>
+          <a href="/portfolio">Portfolio</a>
+          <a href="#">Quote</a>
+          <a href="/about_us">About Us</a>
+        </nav>
 
-     <div id="main_page_logo">
-      <img  src="{{asset('images/mountain_logo_orange.png')}}" width="60px"/>
-      <img id="words_logo" src="{{asset('images/mountain_words_logo_orange.png')}}" width="140px"/>
-     </div>
+       <div id="main_page_logo">
+        <img  src="{{asset('images/mountain_logo_orange.png')}}" width="60px"/>
+        <img id="words_logo" src="{{asset('images/mountain_words_logo_orange.png')}}" width="140px"/>
+       </div>
 
-    <div class="navbar_mobile">
-      <button id="showRight">Menu</button>
+      <div class="navbar_mobile">
+        <button id="showRight">Menu</button>
+      </div>
+
+      <div class="navbar">
+        <ul>
+        <li><a href="#" >801-998-8195</a></li>
+        <li><a href="/" class="navbar_link">Home</a></li>
+        <li><a href="/" class="navbar_link">Browse</a></li>
+        <li><a href="/kitchen_dreamer" class="navbar_link">Quote</a></li>
+        <li><a href="/" class="navbar_link">Portfolio</a></li>
+        <li><a href="/" class="navbar_link">About Us</a></li>
+        @if(Auth::guest())
+          <li><a href="/login" class="navbar_link">Sign In</a></li>
+          @else
+          <li class="account_drop_down">
+            <a href="#" class="navbar_link" >{{Auth::user()->first_name}}</a>
+            <ul hidden>
+              <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
+            </ul>
+          </li>
+        @endif
+        </ul>
+      </div>
     </div>
-
-    <div class="navbar">
-      <ul>
-      <li><a href="#" >801-998-8195</a></li>
-      <li><a href="/" class="navbar_link">Home</a></li>
-      <li><a href="/" class="navbar_link">Browse</a></li>
-      <li><a href="/" class="navbar_link">Quote</a></li>
-      <li><a href="/" class="navbar_link">Portfolio</a></li>
-      <li><a href="/" class="navbar_link">About Us</a></li>
-      @if(Auth::guest())
-        <li><a href="/login" class="navbar_link">Sign In</a></li>
-        @else
-        <li class="account_drop_down">
-          <a href="#" class="navbar_link" >{{Auth::user()->name}}</a>
-          <ul hidden>
-            <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
-          </ul>
-        </li>
-      @endif
-      </ul>
-    </div>
+    @yield('content')
   </div>
-  @yield('content')
-
-  <div class="footer">
-    <div style="padding-top:60px;margin:20px;width:100%">
-      Copyright &copy; 2016 <a href="#">Mountain West Design</a>. All rights reserved.
-          <a href="/login" class="fa fa-lock" style="font-size:25px;position:relative;right:0px"></a>
+    <div class="footer">
+      <div style="padding-top:60px;width:100%">
+        Copyright &copy; 2016 <a href="#">Mountain West Design</a>. All rights reserved.
+            <a href="/admin/add_stone" class="fa fa-lock" style="font-size:25px;"></a>
+      </div>
     </div>
-  </footer>
+
 
 </body>
 </html>

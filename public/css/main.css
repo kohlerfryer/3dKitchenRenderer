@@ -1,6 +1,7 @@
 html{
 	-webkit-font-smoothing: antialiased;
 	font-family: helvetica;
+	height: 100%;
 }
 
 body {
@@ -11,6 +12,13 @@ body {
     width: 100%;
     height: 100%;
     font-weight: lighter;
+    height:100%;
+}
+
+.wrapper {
+    min-height: 100%;
+    margin-bottom: -100px;
+    padding-bottom: 100px;
 }
 
 .header a{
@@ -46,10 +54,12 @@ button{
 
 
 .footer{
+	position: relative;
 	background-color:#F5F5F5;
 	width:100%;
-	height:100px;
 	color:black;
+	padding:5px;
+	min-height: 100px;
 }
 
   .slideout-menu {
@@ -160,6 +170,7 @@ form input{
 table, th, td {
     text-align: left;
     padding-bottom: 10px;
+    padding-left:25px;
 }
 
 #stone_info_view h4{
@@ -201,7 +212,7 @@ table, th, td {
 	height:100px;
 	float:right;
 	margin-top:20px;
-	font-size: 18px;
+	font-size: 22px;
 	padding-right:20px;
 	overflow: hidden;
 }
@@ -264,6 +275,7 @@ color:#F16739;
 
 .main_header button{
 	background-color: rgba(255, 255, 255, 0.82);
+	font-weight: 200;
 } 
 
 #btn_get_quote{
@@ -274,6 +286,24 @@ color:#F16739;
 	margin-bottom:70px;
 	margin-top:70px;
 	color:black;
+}
+
+#btn_add_to_quote{
+	color:white;
+	font-size:17px;
+	margin-top:20px;
+	background-color:#f67555;
+	border-radius:4px;
+	height:40px;
+	border:none;
+}
+
+#btn_get_estimate{
+	height:40px;
+	border:none;
+	font-size: 17px;
+	margin-bottom:70px;
+	margin-top:70px;
 }
 
 .kitchen_builder_header button{
@@ -296,6 +326,7 @@ color:#F16739;
 }
 
 #showRight{
+	color:black;
 	width:60px;
 	height:60px;
 	right:20px;
@@ -308,6 +339,7 @@ color:#F16739;
 
 .evenly{
     text-align:justify;
+    padding:5px;
 
 }
 .evenly h3{
@@ -446,7 +478,59 @@ table tr th{
 	display:inline-block;
 }
 
-@media all and  ( max-width: 920px )  {
+#table_quote{
+width:100%;
+max-width:900px;
+background-color:#F5F5F5;
+font-family:helvetica;
+font-weight:lighter;
+margin-bottom:20px;
+}
+
+#table_quote th{
+	padding:0px;
+}
+
+#quote_summary{
+
+width:100%;
+max-width:900px;
+background-color:#F5F5F5;
+padding-top:20px;
+padding:20px;
+position:absolute;
+top:50%;
+left:50%;
+transform: translate(-50%, -50%);
+}
+
+#stone_summary{
+	width:50%;
+	display:inline-table;
+	text-align:center;
+}
+
+#stone_description{
+padding-top:10px;
+padding-bottom:10px;
+font-family:helvetica;
+font-weight:100;
+text-align:left;
+}
+
+#select_group_type{
+background: transparent;
+font-family: helvetica;
+font-weight: lighter;
+font-size: 24px;
+border: none;
+}
+
+#instock_quantity{
+ text-align: left;
+}
+
+@media all and  ( max-width: 1120px )  {
 	.navbar{
 		display: none;
 	}
@@ -458,12 +542,36 @@ table tr th{
 
 @media all and  ( max-width: 555px )  {
 	.stone_texture_tile{
-		width:45%;
+		width:49%;
 		height:150px;
 	}
 
 	#background-image{
-   	width:80%;
-    height:80vw;
+	   	width:80%;
+	    height:80vw;
+	}
+
+	#stone_summary{
+		width:100%;
+		padding:5px;
+	}
+
+	.hide_on_mobile{
+		display:none;
+	}
+	#quote_summary{
+		margin-top:20px;
+		margin-bottom:20px;
+		width:100%;
+		background-color:#F5F5F5;
+		padding:20px;
+		position:relative;
+		display: block;
+		margin:0;
+		top:0;
+		left:0;
+		transform: translate(0, 0);
+		margin-top:20px;
+		margin-bottom: 20px;
 	}
 }

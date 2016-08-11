@@ -28,6 +28,6 @@ Route::get('custom_quote', 'MainController@get_custom_quote_view');
 Route::get('kitchen_dreamer', 'MainController@get_kitchen_dreamer_view');
 Route::get('kitchen_dreamer/get_instant_quote', 'MainController@get_instant_quote');
 Route::get('kitchen_dreamer/get_kitchen_counter_layers/{stone_id}/{room_id}', 'MainController@get_kitchen_counter_layers');
-Route::get('kitchen_dreamer/delete_from_quote/{countertop_id}', 'MainController@delete_from_quote');
-Route::post('kithen_dreamer/add_stone_to_quote', 'MainController@add_stone_to_quote');
+Route::post('kitchen_dreamer/delete_stone_from_quote', 'MainController@delete_from_quote');
+Route::post('kitchen_dreamer/add_stone_to_quote', 'MainController@add_stone_to_quote');
 

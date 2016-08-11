@@ -20,6 +20,13 @@
        </select></br></br>
        Price Per Square Foot</br>
        <input name="stone_price" id="stone_price"></br></br>
+       Group</br>
+       <select name="group" id="stone_group" style="width:150px">
+          <option value="">select type</option>
+          @foreach($stone_groups as $stone_group)
+             <option value="{{trim($stone_group->id)}}" >{{$stone_group->name}}</option>
+          @endforeach
+       </select></br></br>
        In Stock Quantity</br>
        <input name="stone_quantity" id="stone_quantity"></br></br>
        Stone Description</br>
