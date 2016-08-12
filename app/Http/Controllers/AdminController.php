@@ -676,11 +676,12 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
       $im6 = clone $im;
       $im7 = clone $im;
       $im8 = clone $im;
-      //$im4 = clone $im;
+      $im9 = clone $im;
+      $im10 = clone $im;
 
       $image_background = new Imagick();
-      //$image_texture = new Imagick('images/room_backgrounds/bathroom_1_layers.png');
-      //$image_texture->adaptiveResizeImage(900,500);
+      $image_texture = new Imagick('images/room_backgrounds/kitchen_1_layers.png');
+    $image_texture->adaptiveResizeImage(900,500);
 
       $image_background->newImage(900, 500, 'transparent');
       $image_background->setimagebackgroundcolor("transparent");
@@ -699,11 +700,13 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
 
       $im7->cropImage(900,500,0,0);
       $im7->adaptiveResizeImage(900,500);
-      $im8->cropImage(20,500,0,0);
-      $im8->adaptiveResizeImage(900,15);
+      $im8->cropImage(900,30,0,0);
+      $im8->adaptiveResizeImage(900,500);
 
-      //$im6->adaptiveResizeImage(900,500);
-      //$im7->adaptiveResizeImage(900,500);
+      $im9->cropImage(500,250,0,0);
+      $im9->adaptiveResizeImage(900,500);
+      $im10->cropImage(20,500,0,0);
+      $im10->adaptiveResizeImage(900,500);
 
       $controlPoints = array( 
         0, 0, 
@@ -713,10 +716,10 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
         130, 271,       
 
         900, 0,
-        567, 242,
+        569, 241,
 
         900, 500,
-        302, 336
+        301, 336
       );
 
       $controlPoints2 = array( 
@@ -727,24 +730,24 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
         130, 279,       
 
         900, 0,
-        302, 336,
+        301, 336,
 
         900, 500,
-        302, 348
+        301, 349
       );
 
       $controlPoints3 = array( 
         0, 0, 
-        567, 242,
+        569, 241,
 
         0, 500,
-        302, 336,     
+        301, 336,     
 
         900, 0,
-        567, 248,
+        569, 250,
 
         900, 500,
-        302, 348
+        301, 349
       );
 
       $controlPoints4 = array( 
@@ -797,10 +800,10 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
         384, 210,     
 
         900, 0,
-        828, 232,
+        820, 232,
 
         900, 500,
-        828, 244
+        820, 244
       );
 
       $controlPoints8 = array( 
@@ -808,13 +811,41 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
         400, 210,
 
         0, 500,
-        384, 225,       
+        400, 215,       
 
         900, 0,
-        828, 200,
+        820, 244,
 
         900, 500,
-        828, 300
+        820, 251
+      );
+
+      $controlPoints9 = array( 
+        0, 0, 
+        378, 205,
+
+        0, 500,
+        314, 212,     
+
+        900, 0,
+        392, 210,
+
+        900, 500,
+        339, 214
+      );
+
+      $controlPoints10 = array( 
+        0, 0, 
+        392, 210,
+
+        0, 500,
+        339, 214,       
+
+        900, 0,
+        392, 215,
+
+        900, 500,
+        339, 219
       );
       $im->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
       $im2->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
@@ -824,6 +855,8 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
       $im6->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
       $im7->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
       $im8->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im9->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
+      $im10->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_TRANSPARENT);
 
       $im->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints, true);
       $im2->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints2, true);
@@ -833,6 +866,8 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
       $im6->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints6, true);
       $im7->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints7, true);
       $im8->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints8, true);
+      $im9->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints9, true);
+      $im10->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints10, true);
 
       $image_background->addImage($im);
       $image_background->addImage($im2);
@@ -842,8 +877,10 @@ public function set_textures_kitchen_1($stone_id, $stone_texture_url)
       $image_background->addImage($im6);
       $image_background->addImage($im7);
       $image_background->addImage($im8);
+      $image_background->addImage($im9);
+      $image_background->addImage($im10);
 
-      //$image_background->addImage($image_texture);
+      $image_background->addImage($image_texture);
       $image_background = $image_background->mergeImageLayers(Imagick::LAYERMETHOD_UNDEFINED);
       $image_background->setFormat("png");
 

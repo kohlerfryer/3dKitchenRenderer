@@ -23,6 +23,11 @@
 	      <a href="/portfolio">Portfolio</a>
 	      <a href="/kitchen_dreamer">Browse</a>
 	      <a href="/about_us">About Us</a>
+          @if(Auth::guest())
+           <a href="/login">Login</a>
+          @else
+           <a href="/auth/logout">Sign Out</a>
+          @endif
 	    </nav>
 		 <div id="main_page_logo">
 		 	<img src="images/mountain_logo.png" width="70px"/>

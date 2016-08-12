@@ -1,5 +1,6 @@
 @extends('layouts.page')
 	@section('content')
-		<center><h2 style="padding-bottom:400px">Sorry, the page you were looking for does not exist.</h2></center>
-
+	<div class="page_not_found">
+		<h1>Comming Soon</h1>
+	</div>
 	@endsection

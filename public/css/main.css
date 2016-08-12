@@ -530,6 +530,36 @@ border: none;
  text-align: left;
 }
 
+.page_not_found h1{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.authentication{
+	font-family: helvetica;
+	font-size: 20px;
+	line-height: 2;
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+	width:100%;
+	padding:20px;
+	max-width: 400px;
+}
+
+.authentication h2{
+	margin:0px;
+	padding:0px;
+}
+
+.authentication button{
+	width: 120px;
+	height: 30px
+}
+
 @media all and  ( max-width: 1120px )  {
 	.navbar{
 		display: none;
@@ -550,7 +580,12 @@ border: none;
 	   	width:80%;
 	    height:80vw;
 	}
-
+	.authentication{
+		position:relative;
+		transform:translate(0%,0%);
+		top:0;
+		left:0;
+	}
 	#stone_summary{
 		width:100%;
 		padding:5px;

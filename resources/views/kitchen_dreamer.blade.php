@@ -2,6 +2,24 @@
 
 @section('content')
 	<center>
+		<form id="page_data_form" action="/kitchen_dreamer" hidden>
+			<input name="selected_stone_type" id="selected_stone_type" value="{{$selected_stone_type}}">
+			<input name="selected_room_id" id="selected_room_id" value="{{$selected_room->id}}">
+
+			@if(isset($selected_stone_group))
+				<input name="selected_stone_group" id="selected_stone_group" value="{{$selected_stone_group}}">
+			@else
+				<input name="selected_stone_group" id="selected_stone_group">
+			@endif
+
+			@if(isset($user_dimensions))
+				<input name="island_dimensions" value='{{user_dimensions}}' id='user_dimensions'>
+			@else
+				<input name="island_dimensions" id="island_dimensions" value=''>
+			@endif
+
+
+		</form>
 		<div class="kitchen_dreamer" style="position:relative;width:100%;max-width:900px;max-height:500px">
 			<img id="background_image" src="{{asset($selected_room->picture_url)}}" room_id="{{$selected_room->id}}" style="position:absolute;top:0;left:0;right:0;bottom:0;max-width:900px;max-height:500px;width:100%;height:100%"/>
 			<img id="main_counter_top" src="{{asset('images/room_backgrounds/kitchen_2_layers.png')}}"  style="position:absolute;top:0;left:0;right:0;bottom:0;max-width:900px;max-height:500px;width:100%;height:100%" hidden/>
@@ -36,16 +54,16 @@
 		<div id="stone_type_list" class="evenly page">
 			@foreach ($stone_types as $stone_type)
 				@if (trim($stone_type->type) == trim($selected_stone_type))
-					<span class="list_option"><h3 class="selected"><a class="stone_type" link="?selected_stone_type={{trim($stone_type->type)}}">{{trim($stone_type->type)}}</a></h3></span>
+					<span class="list_option"><h3 class="selected"><a class="stone_type">{{trim($stone_type->type)}}</a></h3></span>
 				@else
-					<span class="list_option"><h3><a  class="stone_type" link="?selected_stone_type={{trim($stone_type->type)}}">{{trim($stone_type->type)}}</a></h3></span>
+					<span class="list_option"><h3><a  class="stone_type">{{trim($stone_type->type)}}</a></h3></span>
 				@endif
 			@endforeach
 			<span>
-				<select id="select_group_type" selected_stone_type="{{trim($selected_stone_type)}}" selected_room_id="{{$selected_room->id}}">
+				<select id="select_group_type">
 				<option value="">all groups</option>
 				@foreach($stone_groups as $stone_group)
-					@if($stone_group->id == $selected_stone_group)
+					@if(isset($selected_stone_group ) && $stone_group->id == $selected_stone_group)
 						<option value="{{$stone_group->id}}" selected>{{$stone_group->name}}</option>
 					@else
 						<option value="{{$stone_group->id}}">{{$stone_group->name}}</option>
@@ -55,18 +73,20 @@
 			</span>
 		</div>
 
-		@foreach ($stones as $stone)
-			<img
-			id="{{$stone->id}}"
-			stone-description="{{$stone->stone_description}}"
-			stone-title="{{$stone->stone_name}}"
-			in-stock-quantity="{{$stone->in_stock_quantity}}"
-			price="{{$stone->stone_price_per_square_foot}}"
-			stone-picture-url="{{$stone->stone_picture_url}}"
-			class="stone_texture_tile" 
-			src="{{asset($stone->stone_texture_url)}}" 
-			/>
-		@endforeach
+		<div id="stone_tiles">
+			@foreach ($stones as $stone)
+				<img
+				id="{{$stone->id}}"
+				stone-description="{{$stone->stone_description}}"
+				stone-title="{{$stone->stone_name}}"
+				in-stock-quantity="{{$stone->in_stock_quantity}}"
+				price="{{$stone->stone_price_per_square_foot}}"
+				stone-picture-url="{{$stone->stone_picture_url}}"
+				class="stone_texture_tile" 
+				src="{{asset($stone->stone_texture_url)}}" 
+				/>
+			@endforeach
+		</div>
 
 	</div>
 
@@ -98,9 +118,15 @@
 								  <div style="width:330px;position:relative;margin:auto;padding-bottom:80px">
 								    <div style="width:100px;height:200px;background-color:black;margin:auto">
 								    </div>
-								    <input style="position:absolute;top:90px;left:5px;width:100px" id="height_1_island" placeholder="height">
-								    <input style="position:absolute;bottom:30px;left:115px;width:100px;"id="width_1_island"  placeholder="width">
+								    @if(isset($user_dimensions['island']))
+								   	 	<input style="position:absolute;top:90px;left:5px;width:100px" id="height_1_island" placeholder="height" value="$user_dimensions['island'][height]">
+									    <input style="position:absolute;bottom:30px;left:115px;width:100px;"id="width_1_island"  placeholder="width" value="$user_dimensions['island'][width]">
+								    @else
+									    <input style="position:absolute;top:90px;left:5px;width:100px" id="height_1_island" placeholder="height">
+									    <input style="position:absolute;bottom:30px;left:115px;width:100px;"id="width_1_island"  placeholder="width">
+								  	@endif
 									<button type="button" id="btn_hide_island_dimensions" style="position:absolute;bottom:0;left:0;width:100px;height:30px">Return</button>
+
 								  </div>
 							</div>
 							<div id="dimensions-l-shape"  hidden>
@@ -109,11 +135,17 @@
 								    </div>
 								   <div style="width:100px;height:200px;background-color:black;margin:auto">
 								    </div>
-								    <input style="position:absolute;bottom:180px;left:225px;width:100px;" id="height_1_lshape" placeholder="Height">
-								    <input style="position:absolute;top:5px;left:50px;width:100px;" id="width_1_lshape" placeholder="Width">
-
-								    <input style="position:absolute;bottom:100px;left:10px;width:100px;" id="height_2_lshape" placeholder="Height">
-								    <input style="position:absolute;top:150px;left:10px;width:100px" id="width_2_lshape" placeholder="Width">
+								    @if(isset($user_dimensions['lshape']))
+									    <input style="position:absolute;bottom:180px;left:225px;width:100px;" id="height_1_lshape" placeholder="Height" value="$user_dimensions['lshape'][height]">
+									    <input style="position:absolute;top:5px;left:50px;width:100px;" id="width_1_lshape" placeholder="Width" value="$user_dimensions['lshape'][width]">
+									    <input style="position:absolute;bottom:100px;left:10px;width:100px;" id="height_2_lshape" placeholder="Height" value="$user_dimensions['lshape'][height_2]">
+									    <input style="position:absolute;top:150px;left:10px;width:100px" id="width_2_lshape" placeholder="Width" value="$user_dimensions['lshape'][width_2]">
+									@else
+									    <input style="position:absolute;bottom:180px;left:225px;width:100px;" id="height_1_lshape" placeholder="Height">
+									    <input style="position:absolute;top:5px;left:50px;width:100px;" id="width_1_lshape" placeholder="Width">
+									    <input style="position:absolute;bottom:100px;left:10px;width:100px;" id="height_2_lshape" placeholder="Height">
+									    <input style="position:absolute;top:150px;left:10px;width:100px" id="width_2_lshape" placeholder="Width">
+									@endif
 									<button type="button" id="btn_hide_lshape_dimensions" style="position:absolute;bottom:0;left:0;width:100px;height:30px">Return</button>
 
 								  </div>

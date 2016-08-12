@@ -27,15 +27,9 @@
   <div class="wrapper">
     <div class="header">
       <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right" id="cbp-spmenu-s2">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
           <a href="/">Home</a>
-          <a href="/portfolio">Portfolio</a>
-          <a href="/kitchen_dreamer">Quote</a>
-          <a href="/about_us">About Us</a>
-          @if(Auth::guest())
-           <a href="/login">Login</a>
-          @else
-           <a href="/auth/logout">Sign Out</a>
-          @endif
         </nav>
 
        <div id="main_page_logo">
@@ -49,25 +43,12 @@
 
       <div class="navbar">
         <ul>
-        <li><a href="#" >801-998-8195</a></li>
-        <li><a href="/" class="navbar_link">Home</a></li>
-        <li><a href="/kitchen_dreamer" class="navbar_link">Quote</a></li>
-        <li><a href="/portfolio" class="navbar_link">Portfolio</a></li>
-        <li><a href="/about_us" class="navbar_link">About Us</a></li>
-        @if(Auth::guest())
-          <li><a href="/login" class="navbar_link">Sign In</a></li>
-          @else
-          <li class="account_drop_down">
-            <a href="#" class="navbar_link" >{{Auth::user()->first_name}}</a>
-            <ul hidden>
-              <li><a class="navbar_link" href="/auth/logout" >Sign Out</a></li>
-            </ul>
-          </li>
-        @endif
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register" class="navbar_link">Register</a></li>
         </ul>
       </div>
     </div>
-    @yield('content')
+        @yield('content')
   </div>
     <div class="footer">
       <div style="padding-top:60px;width:100%">

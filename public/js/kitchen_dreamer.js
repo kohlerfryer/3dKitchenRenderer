@@ -1,6 +1,34 @@
 $(document).ready(function(){
 	var last_clicked_texture_id = 0;
 
+	function repopulate_stone()
+	{
+		form_data = $('#page_data_form').serialize();
+		var url = '/kitchen_dreamer/get_stone';
+		$.ajax({
+			url:url,
+			data:form_data
+			}).done(function(response){
+			response = JSON.parse(response);
+			$('#stone_tiles').html('');
+			$.each(response.stones, function(key, stone)
+			{
+				var html = '';
+				html += '<img ';
+				html += 'id="'+stone.id+'"';
+				html += 'stone-description="'+stone.stone_description+'"';
+				html += 'stone-title="'+stone.stone_name+'"';
+				html += 'in-stock-quantity="'+ stone.in_stock_quantity +'"';
+				html += 'price="'+stone.stone_price_per_squre_foot+'"';
+				html += 'stone-picture-url="'+stone.stone_picture_url+'"';
+				html += 'class="stone_texture_tile" ';
+				html += 'src="'+stone.stone_texture_url+'" ';
+				html += '/>';
+				$('#stone_tiles').append(html);
+			});
+		});
+	}
+
 	function repopulate_table_quote(countertops_array)
 	{
 		var html = '';
@@ -41,7 +69,10 @@ $(document).ready(function(){
 	});
 
 	$('#select_group_type').change(function(){
-		window.location = '/kitchen_dreamer?selected_stone_type=' + $(this).attr('selected_stone_type') + '&selected_room_id=' + $('#background_image').attr('room_id') + '&' + 'selected_stone_group=' + $(this).val();
+		var stone_group = $(this).val();
+		$('#page_data_form #selected_stone_group').val(stone_group);
+		//$('#page_data_form').submit();
+		repopulate_stone();
 	});
 
 	$('#add_stone_form').submit(function(e){
@@ -65,7 +96,7 @@ $(document).ready(function(){
 		});
 	});
 
-	$('.stone_texture_tile').click(function(){
+	$('#stone_tiles').on('click', 'img', function(){
 		$('#stone_info_view #stone_title').html($(this).attr('stone-title'));
 		$('#stone_info_view #stone_description').html($(this).attr('stone-description'));
 		$('#stone_info_view #stone_image').attr('src', $(this).attr('stone-picture-url'));
@@ -89,6 +120,8 @@ $(document).ready(function(){
 	$('.room').click(function(){
 
 		var picture_url = $(this).attr('picture_url');
+		var room_id = $(this).attr('id');
+		$('#page_data_form #selected_room_id').val(room_id);
 		$('#background_image').attr('src', picture_url);
 		$('#background_image').attr('room_id', $(this).attr('id'));
 		$('#main_counter_top').hide();
@@ -101,21 +134,11 @@ $(document).ready(function(){
 	});	
 
 	$('.stone_type').click(function(){
-		window.location = $(this).attr('link') + '&selected_room_id=' + $('#background_image').attr('room_id') + '&selected_stone_group=' + $('#select_group_type').val(); 
-	});
-
-
-	$('#btn_submit_quote_info').click(function(){
-		$.ajax({
-			url: '/kitchen_dreamer/get_instant_quote',
-			failure: function(){
-				alert('sorry an error ocurred');
-			},
-			success: function(response){
-				response = JSON.parse(response);
-				window.location.reload();
-			}
-		});
+		$('#stone_type_list h3').removeClass('selected');
+		$(this).parent().addClass('selected');
+		var stone_type = $(this).html();
+		$('#page_data_form #selected_stone_type').val(stone_type);
+		repopulate_stone();
 	});
 
 	$('#btn_view_dimensions').click(function(){
@@ -131,6 +154,14 @@ $(document).ready(function(){
 	$('#btn_hide_lshape_dimensions').click(function(){
 		if($('#height_1_lshape').val() && $('#height_2_lshape').val() && $('#width_1_lshape').val() && $('#width_2_lshape').val())
 		{
+			//var dimensions = {};
+			//dimensions['lshape'] = {};
+			//dimensions['lshape']['width'] = $('#width_1_lshape').val();
+			//dimensions['lshape']['height'] = $('#height_1_lshape').val();
+			//dimensions['lshape']['width_2'] = $('#width_2_lshape').val();
+			//dimensions['lshape']['height_2'] = $('#height_2_lshape').val();
+			//$('#page_data_form #user_dimensions').val(dimensions);
+
 			var countertop_area_feet_squared = ($('#height_1_lshape').val()/12 * $('#width_1_lshape').val()/12) - ($('#height_2_lshape').val()/12 * $('#width_2_lshape').val()/12);
 			countertop_area_feet_squared = countertop_area_feet_squared.toFixed(1);
 			$('#input_countertop_dimensions').val(countertop_area_feet_squared);
@@ -144,6 +175,15 @@ $(document).ready(function(){
 	$('#btn_hide_island_dimensions').click(function(){
 		if($('#height_1_island').val() && $('#width_1_island').val())
 		{
+			//var dimensions = {};
+			//dimensions['type'] = 'island';
+			//dimensions['width'] = $('#width_1_island').val();
+			//dimensions['height'] = $('#height_1_island').val();
+			//alert(JSON.stringify(dimensions));
+			//$('#page_data_form #user_dimensions').val(JSON.stringify(dimensions));
+			//alert($('#page_data_form #user_dimensions').val());
+
+
 			var countertop_area_feet_squared = ($('#height_1_island').val()/12 * $('#width_1_island').val()/12); 
 			countertop_area_feet_squared = countertop_area_feet_squared.toFixed(1);
 			$('#input_countertop_dimensions').val(countertop_area_feet_squared);

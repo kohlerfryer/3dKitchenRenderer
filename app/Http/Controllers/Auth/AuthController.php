@@ -69,19 +69,16 @@ class AuthController extends Controller
     public function login()
     {
         if (Auth::attempt(['email' => Input::get('email'), 'password' => Input::get('password')])) {
-            // Authentication passed...
             $authorization = DB::select('select authorization from users where email = ?', [Input::get('email')]);
-            if($authorization[0]->authorization == '1')
-            {
-                return redirect('/admin/add_stone');
+            $url = '/';
+            if(Session::has('last_request'))
+            { 
+                $url = Session::get('last_request');
+                Session::forget('last_request');
             }
-            else{
-                return back();
-            }
+            return redirect($url);
         }
         return redirect('/login')->with('error', 'Your password or email is incorrect.');
-        //authentication failed
-
     }
 
     protected function logout()
@@ -96,10 +93,10 @@ class AuthController extends Controller
     {
         if(Auth::guest())return View::make('auth/login');
         
-        $authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
-        if($authorization[0]->authorization == '1')
-        return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
-        else
+        //$authorization = DB::select('select authorization from users where email = ?', [Auth::user()->email]);
+        //if($authorization[0]->authorization == '1')
+        //return View::make('add_stone', ['current_page' => 'add_stone' , 'user_name' => Auth::user() , 'stone_types' =>   $page_data['stone_types'] = DB::select('select * from stone_types')]);
+        //else
         return View::make('home');
 
     }

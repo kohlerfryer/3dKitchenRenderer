@@ -35,13 +35,13 @@ class MainController extends Controller
         $page_data = [];
         $stone_group = '1';
         $stone_type = 'granite';
-        $selected_stone_group = 'all groups';
         $selected_room_id = '1';
 
         if(Input::has('selected_stone_group')) $stone_group = Input::get('selected_stone_group');
         if(Input::has('selected_stone_type')) $stone_type = Input::get('selected_stone_type');
         if(Input::has('selected_room_id')) $selected_room_id = Input::get('selected_room_id');
         if(Session::get('guest_data')) $page_data['guest_data'] = Session::get('guest_data');
+        if(Input::has('user_dimensions')) /*$page_data['user_dimensions'] =*/ dd (Input::get('user_dimensions'));
 
         $page_data['selected_room'] = DB::select('select * from background_rooms where id = ?', [$selected_room_id])[0];
         $page_data['stone_types'] = DB::select('select * from stone_types');
@@ -53,14 +53,50 @@ class MainController extends Controller
         {
             $stones = DB::table('stone')->where('stone_type', '=', $stone_type)->where('group_id', '=', Input::get('selected_stone_group'))->get();
             $selected_stone_group =  Input::get('selected_stone_group');
+            $page_data['selected_stone_group'] = $selected_stone_group;
         }
-        else $stones = DB::table('stone')->where('stone_type', '=', $stone_type)->get();
-        $page_data['selected_stone_group'] = $selected_stone_group;
+        else {
+            $stones = DB::table('stone')->where('stone_type', '=', $stone_type)->get();
+        }
+        
         if(isset($stones)) $page_data['stones'] = $stones;
         return view('kitchen_dreamer', $page_data);
     }
 
-    public function get_quote_dreamer_view()
+    public function get_stone()
+    {
+        $results = [];
+        $results['result'] = 'failure';
+
+        $stone_type = 'granite';
+        $stones = [];
+
+        if(Input::has('selected_stone_group')) $stone_group = Input::get('selected_stone_group');
+        if(Input::has('selected_stone_type')) $stone_type = Input::get('selected_stone_type');
+        if(Input::has('selected_room_id')) $selected_room_id = Input::get('selected_room_id');
+
+        if(isset($stone_group))
+        $stones_object = DB::table('stone')->where('stone_type', '=', $stone_type)->where('group_id', '=', $stone_group)->get(); 
+        else
+        $stones_object = DB::table('stone')->where('stone_type', '=', $stone_type)->get(); 
+        
+        if(isset($stones_object))
+        {
+            foreach($stones_object as $stone)
+            {
+                $stones[$stone->id] = ['id'=> $stone->id, 'stone_description' => $stone->stone_description,
+                 'stone_name' => $stone->stone_name, 'in_stock_quantity' => $stone->in_stock_quantity, 'stone_price_per_square_foot' => $stone->stone_price_per_square_foot,
+                 'stone_picture_url' => $stone->stone_picture_url, 'stone_texture_url' => $stone->stone_texture_url];
+            }
+        }
+
+        $results['result'] = 'success';
+        $results['stones'] = $stones;
+        return json_encode($results);
+
+    }
+
+    /*public function get_quote_dreamer_view()
     {
         $page_data = [];
         $page_data['stone_types'] = DB::select('select * from stone_types');
@@ -80,7 +116,7 @@ class MainController extends Controller
         }
 
         return view('quote_dreamer', $page_data);
-    }
+    }*/
 
     public function add_stone_to_quote()
     {
@@ -158,33 +194,14 @@ class MainController extends Controller
         Session::put('quote_data', $quote_data);
         return View::make('quote_summary', ['quote_data' => $quote_data]);
 
-
-/*
-        if(!Input::has('stone_id') || !Input::has('square_feet') || !Input::has('email') || !Input::has('name') || !Input::has('phone_number'))
-        {
-            $results['error_message'] = 'Please Specify All Related Fields';
-            return json_encode($results);
-        }
-
-        $guest_data = array('name' => Input::get('name'), 'email' => Input::get('email'), 'phone_number' => Input::get('phone_number'), 'square_feet' => Input::get('square_feet'));
-        Session::put('guest_data', $guest_data);
-
-        $stone = DB::table('stone')->where('id', '=', Input::get('stone_id'))->first();
-
-        $estimate = $stone->stone_price_per_square_foot * (int) Input::get('square_feet');
-        
-        $results['estimate'] = number_format($estimate);
-        */
-
-
     }
 
-    public function get_custom_quote_view()
+    /*public function get_custom_quote_view()
     {   
         //for now just return initial view
         return View::make('quote_summary');
         //choose room & dimensions & number of counterotops ect....
         //choose countertop view
-    }
+    }*/
 
 }
